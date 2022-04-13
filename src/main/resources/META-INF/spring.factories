@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  cn.pan.connorstarter.conf.ConnorAutoConfiguration,\
+  cn.pan.connorstarter.transport.Client,\
+  cn.pan.connorstarter.transport.ClientChannelInitializer

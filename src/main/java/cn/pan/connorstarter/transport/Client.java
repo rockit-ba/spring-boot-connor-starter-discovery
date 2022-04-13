@@ -1,8 +1,10 @@
 package cn.pan.connorstarter.transport;
 
+import cn.pan.connorstarter.annos.ConnorRespHandle;
 import cn.pan.connorstarter.codec.JsonMagDecoder;
 import cn.pan.connorstarter.codec.JsonMagEncoder;
 import cn.pan.connorstarter.common.Entry;
+import cn.pan.connorstarter.conf.ConnorProperties;
 import cn.pan.connorstarter.inbound.ClientPrintHandle;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -17,73 +19,72 @@ import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 /**
  * @Author Lucky Pan
  * @Date 2022/4/13 14:30
  */
 @Slf4j
+@Configuration
 public class Client {
+    private final Channel CHANNEL;
 
-    public static void main(String[] args) throws InterruptedException {
+    public Client(ConnorProperties connorProperties,
+                  ClientChannelInitializer clientChannelInitializer) {
+        log.info("clientChannelInitializer：{}",clientChannelInitializer);
         NioEventLoopGroup loopGroup = new NioEventLoopGroup();
         Bootstrap handler = new Bootstrap()
                 .group(loopGroup)
                 .channel(NioSocketChannel.class)
-                .handler(new ClientChannelInitializer());
+                .handler(clientChannelInitializer);
+        log.info("配置文件：{}",connorProperties);
 
-        ChannelFuture connect = handler.connect("127.0.0.1", 8080);
+
+        ChannelFuture connect = handler.connect(connorProperties.getConnect(), connorProperties.getPort());
         connect.addListener(ele -> {
             if (ele.isSuccess()) {
-                log.info("客户端连接成功");
+                log.info("connor server 连接成功");
             }else {
-                log.info("客户端连接失败");
+                log.info("connor server 客户端连接失败");
             }
         });
-        connect.sync();
-        Channel channel = connect.channel();
-        Entry entry = new Entry("蕾姆", 12);
-        channel.writeAndFlush(entry);
+        try {
+            connect.sync();
+        } catch (InterruptedException e) {
+            log.error(e.getMessage(),e);
+        }
+        this.CHANNEL = connect.channel();
 
-        ChannelFuture closeFuture = channel.closeFuture();
+        ChannelFuture closeFuture = CHANNEL.closeFuture();
         closeFuture.addListener(ele ->{
-           if (ele.isSuccess()) {
-               log.info("连接已关闭");
-           }
+            if (ele.isSuccess()) {
+                log.info("连接已关闭");
+            }
         });
-        closeFuture.sync();
     }
 
     /**
-     * 流水线设置
+     * 发送消息
+     * @param entry 消息体
+     * @return ChannelFuture
      */
-    static class ClientChannelInitializer extends ChannelInitializer<SocketChannel> {
-        @Override
-        protected void initChannel(SocketChannel socketChannel) {
-            ChannelPipeline pipeline = socketChannel.pipeline();
-            // 入站帧解码
-            pipeline.addLast(new LengthFieldBasedFrameDecoder(
-                    1024*1024*8, 0,
-                    4, 0, 4));
-            // 出站帧编码
-            pipeline.addLast(new LengthFieldPrepender(4));
-
-            // 入站 字节数据解码
-            pipeline.addLast(new StringDecoder(StandardCharsets.UTF_8));
-            // 出站 字节数据解码
-            pipeline.addLast(new StringEncoder(StandardCharsets.UTF_8));
-
-            // 入站 json数据解码
-            pipeline.addLast(new JsonMagDecoder());
-            // 出站 json数据编码
-            pipeline.addLast(new JsonMagEncoder());
-
-            // 入站 请求处理器
-            pipeline.addLast(new ClientPrintHandle());
-
-        }
-
+    public ChannelFuture send(Entry entry) {
+        return CHANNEL.writeAndFlush(entry);
     }
+
+
 }
