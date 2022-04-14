@@ -10,8 +10,8 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * @Author Lucky Pan
- * @Date 2022/4/13 14:30
+ * @author Lucky Pan
+ * @date 2022/4/13 14:30
  */
 @Slf4j
 public class Client {

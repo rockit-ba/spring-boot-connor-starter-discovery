@@ -11,8 +11,6 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
@@ -23,9 +21,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.TreeMap;
 
-@EqualsAndHashCode(callSuper = true)
+/**
+ * <p>
+ *     pipline handle 初始化
+ * </p>
+ * @author jixinag
+ * @date 2022/4/14
+ */
 @Slf4j
-@Data
 public class ClientChannelInitializer extends ChannelInitializer<SocketChannel> implements ApplicationListener<ContextRefreshedEvent> {
     /**
      * 全局处理器流水线

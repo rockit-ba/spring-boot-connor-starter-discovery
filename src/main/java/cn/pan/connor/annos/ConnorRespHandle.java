@@ -11,8 +11,8 @@ import java.lang.annotation.Target;
 /**
  * 处理Connor server的响应的 处理器
  * 如果有多个请添加 @order 注解
- * @Author Lucky Pan
- * @Date 2022/4/13 22:52
+ * @author Lucky Pan
+ * @date 2022/4/13 22:52
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

@@ -11,8 +11,8 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * connor client 自动装配
- * @Author Lucky Pan
- * @Date 2022/4/13 20:47
+ * @author Lucky Pan
+ * @date 2022/4/13 20:47
  */
 @Slf4j
 @Configuration
