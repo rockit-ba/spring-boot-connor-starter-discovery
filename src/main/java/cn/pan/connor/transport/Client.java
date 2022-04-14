@@ -50,6 +50,8 @@ public class Client {
         });
         Runtime.getRuntime()
                 .addShutdownHook(new Thread(() -> {
+                    CHANNEL.flush();
+                    CHANNEL.close();
                     log.info("NioEventLoopGroup source close");
                     loopGroup.shutdownGracefully();
                 }, "shutdown"));

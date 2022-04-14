@@ -17,9 +17,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.core.annotation.AnnotationUtils;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.TreeMap;
 
 @EqualsAndHashCode(callSuper = true)
 @Slf4j
@@ -62,12 +64,23 @@ public class ClientChannelInitializer extends ChannelInitializer<SocketChannel> 
         if (applicationContext.getParent() != null) {
             applicationContext = applicationContext.getParent();
         }
+        TreeMap<Integer, ChannelInboundHandlerAdapter> treeMap = new TreeMap<>();
         Map<String, Object> beansWithAnnotation = applicationContext.getBeansWithAnnotation(ConnorRespHandle.class);
         for (Object bean : beansWithAnnotation.values()) {
             ChannelInboundHandlerAdapter clientPrintHandle = (ChannelInboundHandlerAdapter) bean;
-            this.pipeline.addLast(clientPrintHandle);
-            ConnorRespHandle annotation = bean.getClass().getAnnotation(ConnorRespHandle.class);
-            log.info("load ConnorRespHandle bean {}",bean.getClass().getName());
+            ConnorRespHandle annotation = AnnotationUtils.getAnnotation(bean.getClass(), ConnorRespHandle.class);
+
+            int order = annotation.value();
+            if (treeMap.containsKey(order)) {
+                throw new RuntimeException("There are multiple ChannelInboundHandlerAdapter，Need to add order for them");
+            }
+            treeMap.put(order, clientPrintHandle);
         }
+
+        treeMap.values().forEach(ele -> {
+            log.info("add ConnorRespHandle  {}",ele.getClass().getName());
+            this.pipeline.addLast(ele);
+        });
+
     }
 }

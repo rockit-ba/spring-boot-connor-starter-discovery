@@ -24,7 +24,7 @@ public class ConnorAutoConfiguration implements InitializingBean {
     private final ConnorProperties connorProperties;
 
     public ConnorAutoConfiguration(ConnorProperties connorProperties) {
-        log.info("config loaded");
+        log.info("connor config loaded");
         this.connorProperties = connorProperties;
     }
 
