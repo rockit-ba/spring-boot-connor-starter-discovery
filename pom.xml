@@ -11,7 +11,7 @@
 	</parent>
 
 	<groupId>cn.pan</groupId>
-	<artifactId>connor-starter</artifactId>
+	<artifactId>spring-boot-connor-starter-discovery</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
 	<name>connor-starter</name>

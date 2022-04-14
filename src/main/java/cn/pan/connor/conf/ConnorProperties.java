@@ -1,4 +1,4 @@
-package cn.pan.connorstarter.conf;
+package cn.pan.connor.conf;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

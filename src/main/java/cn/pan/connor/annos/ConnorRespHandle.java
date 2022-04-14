@@ -1,4 +1,4 @@
-package cn.pan.connorstarter.annos;
+package cn.pan.connor.annos;
 
 import org.springframework.stereotype.Component;
 
