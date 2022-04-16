@@ -1,24 +1,31 @@
 package cn.pan.connor.conf;
 
 import lombok.Data;
-import lombok.experimental.Accessors;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
+
 
 /**
+ *  所有的配置信息
  *  Hint Attributes 可以使用 枚举定义字段类型
  * @author Lucky Pan
  * @date 2022/4/13 20:34
  */
 @Data
-@Accessors(chain = true)
 @ConfigurationProperties(prefix = "connor")
 public class ConnorProperties {
     /**
-     * connor server port.
+     * client server config
+     * {@link ClientService}
      */
-    private Integer port = 8080;
+    @NestedConfigurationProperty
+    private ClientService clientService = new ClientService();
+
     /**
-     * connor server host.
+     * conor server config
+     * {@link Server}
      */
-    private String connect = "localhost";
+    @NestedConfigurationProperty
+    private Server server = new Server();
+
 }

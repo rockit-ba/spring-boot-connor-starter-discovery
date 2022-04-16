@@ -10,7 +10,8 @@ import java.lang.annotation.Target;
 
 /**
  * 处理Connor server的响应的 处理器
- * 如果有多个请添加 @order 注解
+ * 如果有多个请设置 {@link ConnorRespHandle#order()}
+ * 或者 {@link ConnorRespHandle#value()}
  * @author Lucky Pan
  * @date 2022/4/13 22:52
  */
