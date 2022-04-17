@@ -1,4 +1,4 @@
-package cn.pan.connor.codec;
+package cn.pan.connor.handle.codec;
 
 /**
  * <p>

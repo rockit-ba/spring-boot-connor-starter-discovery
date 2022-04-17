@@ -1,9 +1,9 @@
 package cn.pan.connor.transport.request;
 
 import cn.hutool.core.lang.Assert;
-import cn.pan.connor.codec.RpcCodec;
+import cn.pan.connor.handle.codec.RpcCodec;
 import cn.pan.connor.common.consts.RpcKind;
-import cn.pan.connor.conf.ClientService;
+import cn.pan.connor.conf.Discovery;
 import cn.pan.connor.conf.ConnorProperties;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -28,9 +28,9 @@ public class RegistryRequest implements RpcCodec, InitializingBean {
     private final String rpc_kind = RpcKind.REGISTRY;
     /**
      * 发起服务注册的 信息
-     * {@link ClientService}
+     * {@link Discovery}
      */
-    private ClientService client_service;
+    private Discovery discovery;
 
     @Override
     public String getRpcKind() {
@@ -39,9 +39,9 @@ public class RegistryRequest implements RpcCodec, InitializingBean {
 
     @Override
     public void afterPropertiesSet() {
-        ClientService clientService = connorProperties.getClientService();
-        Assert.notNull(clientService,
+        Discovery discovery = connorProperties.getDiscovery();
+        Assert.notNull(discovery,
                 () -> new RuntimeException("clientService not null"));
-        this.client_service = clientService;
+        this.discovery = discovery;
     }
 }

@@ -15,17 +15,30 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 @ConfigurationProperties(prefix = "connor")
 public class ConnorProperties {
     /**
-     * client server config
-     * {@link ClientService}
+     * connor server port.
      */
-    @NestedConfigurationProperty
-    private ClientService clientService = new ClientService();
-
+    private Integer port = 8080;
     /**
-     * conor server config
-     * {@link Server}
+     * connor server host.
+     */
+    private String host = "localhost";
+
+    private Lifecycle lifecycle = new Lifecycle();
+    /**
+     * client server config
+     * {@link Discovery}
      */
     @NestedConfigurationProperty
-    private Server server = new Server();
+    private Discovery discovery = new Discovery();
 
+
+
+    @Data
+    public static class Lifecycle {
+        private boolean enabled = true;
+        @Override
+        public String toString() {
+            return "Lifecycle{" + "enabled=" + this.enabled + '}';
+        }
+    }
 }

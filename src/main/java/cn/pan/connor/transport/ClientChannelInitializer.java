@@ -1,8 +1,8 @@
 package cn.pan.connor.transport;
 
-import cn.pan.connor.annos.ConnorRespHandle;
-import cn.pan.connor.codec.RpcCodecDecoder;
-import cn.pan.connor.codec.RpcCodecEncoder;
+import cn.pan.connor.handle.codec.RpcCodecDecoder;
+import cn.pan.connor.handle.codec.RpcCodecEncoder;
+import cn.pan.connor.handle.resp.RegistryRespHandle;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -11,11 +11,9 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.TreeMap;
 
 /**
  * <p>
@@ -27,13 +25,6 @@ import java.util.TreeMap;
 @Slf4j
 @Component
 public class ClientChannelInitializer extends ChannelInitializer<SocketChannel> {
-    @Autowired
-    private List<ChannelInboundHandlerAdapter> channelInboundHandlerAdapters;
-
-    /**
-     * 全局处理器流水线
-     */
-    private ChannelPipeline pipeline;
 
     /**
      * 基础的初始化
@@ -41,7 +32,10 @@ public class ClientChannelInitializer extends ChannelInitializer<SocketChannel> 
      */
     @Override
     protected void initChannel(SocketChannel socketChannel) {
-        pipeline = socketChannel.pipeline();
+        /**
+         * 全局处理器流水线
+         */
+        ChannelPipeline pipeline = socketChannel.pipeline();
         // 入站帧解码
         pipeline.addLast("LengthFieldBasedFrame",
                 new LengthFieldBasedFrameDecoder(
@@ -62,27 +56,8 @@ public class ClientChannelInitializer extends ChannelInitializer<SocketChannel> 
         pipeline.addLast(RpcCodecDecoder.NAME, new RpcCodecDecoder());
         // 对象转字节
         pipeline.addLast(RpcCodecEncoder.NAME, new RpcCodecEncoder());
-
-        // 添加用户自定义的 handle
-        TreeMap<Integer, ChannelInboundHandlerAdapter> treeMap = new TreeMap<>();
-
-        channelInboundHandlerAdapters.forEach(bean -> {
-            ConnorRespHandle annotation = AnnotationUtils.getAnnotation(bean.getClass(), ConnorRespHandle.class);
-            assert annotation != null;
-
-            // 重新排序
-            int order = annotation.value();
-            if (treeMap.containsKey(order)) {
-                throw new RuntimeException("There are multiple ChannelInboundHandlerAdapter，Need to add order for them");
-            }
-            treeMap.put(order, bean);
-        });
-
-        // 如果自定义的handle有多个，则根据 order 值新兴排序添加
-        treeMap.values().forEach(handlerAdapter -> {
-            log.info("add ConnorRespHandle  {}",handlerAdapter.getClass().getName());
-            this.pipeline.addLast(handlerAdapter);
-        });
+        // 入站 RegistryResp
+        pipeline.addLast(RegistryRespHandle.NAME, new RegistryRespHandle());
 
     }
 

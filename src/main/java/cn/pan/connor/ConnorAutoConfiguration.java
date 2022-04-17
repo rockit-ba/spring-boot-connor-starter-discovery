@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(ConnorProperties.class)
 @AutoConfigureAfter({ConfigurationPropertiesAutoConfiguration.class})
-@ComponentScan({"cn.pan.connor"})
+@ComponentScan({"cn.pan.connor","org.springframework.cloud"})
 public class ConnorAutoConfiguration {
     public ConnorAutoConfiguration() {}
 

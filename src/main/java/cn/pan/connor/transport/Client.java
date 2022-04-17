@@ -2,9 +2,8 @@ package cn.pan.connor.transport;
 
 import cn.hutool.core.lang.Assert;
 import cn.hutool.json.JSONUtil;
-import cn.pan.connor.codec.RpcCodec;
+import cn.pan.connor.handle.codec.RpcCodec;
 import cn.pan.connor.conf.ConnorProperties;
-import cn.pan.connor.conf.Server;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -41,10 +40,7 @@ public class Client implements InitializingBean {
                 .channel(NioSocketChannel.class)
                 .handler(clientChannelInitializer);
 
-        Server server = connorProperties.getServer();
-        Assert.notNull(server,
-                () -> new RuntimeException("server not null"));
-        ChannelFuture connect = handler.connect(server.getConnect(), server.getPort());
+        ChannelFuture connect = handler.connect(connorProperties.getHost(), connorProperties.getPort());
         connect.addListener(ele -> {
             if (ele.isSuccess()) {
                 log.info("connect connor-server success");

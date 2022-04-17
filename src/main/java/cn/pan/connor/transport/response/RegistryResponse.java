@@ -1,6 +1,6 @@
 package cn.pan.connor.transport.response;
 
-import cn.pan.connor.codec.RpcCodec;
+import cn.pan.connor.handle.codec.RpcCodec;
 import cn.pan.connor.common.consts.RpcKind;
 import lombok.Data;
 
@@ -11,11 +11,8 @@ import lombok.Data;
  */
 @Data
 public class RegistryResponse implements RpcCodec {
-    private final String rpc_kind = RpcKind.DISCOVERY;
-    // TODO
-    private String name;
-    private Integer age;
-
+    private final String rpc_kind = RpcKind.REGISTRY;
+    private Boolean flag;
 
     @Override
     public String getRpcKind() {
