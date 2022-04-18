@@ -1,6 +1,6 @@
 package cn.pan.connor.handle.codec;
 
-import cn.hutool.json.JSONUtil;
+import cn.pan.connor.common.consts.JsonUtil;
 import cn.pan.connor.common.consts.RpcKind;
 import cn.pan.connor.transport.response.RegistryResponse;
 import io.netty.buffer.ByteBuf;
@@ -29,7 +29,7 @@ public class RpcCodecDecoder extends ByteToMessageDecoder {
 
         switch (type) {
             case RpcKind.REGISTRY:
-                list.add(JSONUtil.toBean(json,RegistryResponse.class));
+                list.add(JsonUtil.json2pojo(json, RegistryResponse.class));
                 break;
             case RpcKind.DISCOVERY:
                 break;

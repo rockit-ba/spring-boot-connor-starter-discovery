@@ -70,8 +70,12 @@
 		</dependency>
 		<dependency>
 			<groupId>cn.hutool</groupId>
-			<artifactId>hutool-json</artifactId>
-			<version>${hutool.version}</version>
+			<artifactId>hutool-core</artifactId>
+			<version>5.7.22</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
 		</dependency>
 
 		<dependency>

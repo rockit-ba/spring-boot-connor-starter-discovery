@@ -23,7 +23,6 @@ public class ConnorProperties {
      */
     private String host = "localhost";
 
-    private Lifecycle lifecycle = new Lifecycle();
     /**
      * client server config
      * {@link Discovery}
@@ -31,14 +30,4 @@ public class ConnorProperties {
     @NestedConfigurationProperty
     private Discovery discovery = new Discovery();
 
-
-
-    @Data
-    public static class Lifecycle {
-        private boolean enabled = true;
-        @Override
-        public String toString() {
-            return "Lifecycle{" + "enabled=" + this.enabled + '}';
-        }
-    }
 }

@@ -1,8 +1,7 @@
 package cn.pan.connor.handle.codec;
 
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSONConfig;
-import cn.hutool.json.JSONUtil;
+import cn.pan.connor.common.consts.JsonUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
@@ -26,7 +25,7 @@ public class RpcCodecEncoder extends MessageToByteEncoder<RpcCodec> {
         // 请求类型
         String type = msg.getRpcKind();
         // 请求content
-        String jsonStr = JSONUtil.toJsonStr(msg, JSONConfig.create().setTransientSupport(true));
+        String jsonStr = JsonUtil.pojo2json(msg);
         String content = StrUtil.format("{}{}",type,jsonStr);
         out.writeCharSequence(content,StandardCharsets.UTF_8);
     }
