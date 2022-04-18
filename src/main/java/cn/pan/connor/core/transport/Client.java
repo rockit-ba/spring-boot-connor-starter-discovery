@@ -1,51 +1,40 @@
-package cn.pan.connor.transport;
+package cn.pan.connor.core.transport;
 
-import cn.hutool.core.lang.Assert;
-import cn.hutool.json.JSONUtil;
-import cn.pan.connor.handle.codec.RpcCodec;
-import cn.pan.connor.conf.ConnorProperties;
+import cn.pan.connor.common.utils.JsonUtil;
+import cn.pan.connor.core.conf.ConnorDiscoveryProperties;
+import cn.pan.connor.core.handle.codec.RpcCodec;
+import cn.pan.connor.serviceregistry.ConnorRegistration;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 /**
  * Connor 客户端实例
+ * 用于向服务端发送注册信息 {@link cn.pan.connor.serviceregistry.ConnorServiceRegistry#register(ConnorRegistration)}
  * @author Lucky Pan
  * @date 2022/4/13 14:30
  */
 @Slf4j
-@Component
-public class Client implements InitializingBean {
-    @Autowired
-    private ConnorProperties connorProperties;
-    @Autowired
-    ClientChannelInitializer clientChannelInitializer;
+public class Client {
+    private final Channel channel;
+    private final NioEventLoopGroup loopGroup;
 
-    private Channel channel;
-    private NioEventLoopGroup loopGroup;
-
-    @Override
-    public void afterPropertiesSet() {
-        Assert.notNull(clientChannelInitializer,
-                () -> new RuntimeException("clientChannelInitializer not null"));
+    public Client(ConnorDiscoveryProperties properties) {
         loopGroup = new NioEventLoopGroup(Runtime.getRuntime().availableProcessors());
         Bootstrap handler = new Bootstrap()
                 .group(loopGroup)
                 .channel(NioSocketChannel.class)
-                .handler(clientChannelInitializer);
+                .handler(new ClientChannelInitializer());
 
-        ChannelFuture connect = handler.connect(connorProperties.getHost(), connorProperties.getPort());
+        ChannelFuture connect = handler.connect(properties.getHost(), properties.getPort());
         connect.addListener(ele -> {
             if (ele.isSuccess()) {
-                log.info("connect connor-server success");
+                log.info("Connect connor-server success");
             }else {
-                log.error("connect connor-server error");
+                log.error("Connect connor-server error");
             }
         });
 
@@ -55,17 +44,16 @@ public class Client implements InitializingBean {
             log.error(e.getMessage(),e);
         }
         this.channel = connect.channel();
-        log.info("client channel init success");
+        log.info("Client channel init success");
 
         ChannelFuture closeFuture = channel.closeFuture();
         closeFuture.addListener(ele ->{
             if (ele.isSuccess()) {
-                log.info("channel is closed");
+                log.info("Channel is closed");
             }
         });
         this.sourceClose();
     }
-
 
     /**
      * 发送消息
@@ -73,7 +61,7 @@ public class Client implements InitializingBean {
      * @return ChannelFuture
      */
     public ChannelFuture send(RpcCodec rpcCodec) {
-        log.info("send rpc: {}", JSONUtil.toJsonStr(rpcCodec));
+        log.info("Send rpc: {}", JsonUtil.toStr(rpcCodec));
         return channel.writeAndFlush(rpcCodec);
     }
 
@@ -89,7 +77,5 @@ public class Client implements InitializingBean {
                     loopGroup.shutdownGracefully();
                 }, "shutdown"));
     }
-
-
 
 }

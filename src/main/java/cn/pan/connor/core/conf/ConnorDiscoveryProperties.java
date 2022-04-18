@@ -1,19 +1,18 @@
-package cn.pan.connor.conf;
+package cn.pan.connor.core.conf;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
-
 /**
- *  所有的配置信息
- *  Hint Attributes 可以使用 枚举定义字段类型
  * @author Lucky Pan
- * @date 2022/4/13 20:34
+ * @date 2022/4/17 16:30
  */
 @Data
-@ConfigurationProperties(prefix = "connor")
-public class ConnorProperties {
+@ConfigurationProperties(ConnorDiscoveryProperties.PREFIX)
+public class ConnorDiscoveryProperties {
+    public static final String PREFIX = "spring.cloud.connor";
+
     /**
      * connor server port.
      */
@@ -29,5 +28,4 @@ public class ConnorProperties {
      */
     @NestedConfigurationProperty
     private Discovery discovery = new Discovery();
-
 }

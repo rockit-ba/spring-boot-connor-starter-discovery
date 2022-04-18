@@ -1,7 +1,7 @@
 package cn.pan.connor.common.consts;
 
 /**
- * 请求响应的类型
+ * 请求/响应 的类型,任意一种类型都是成对出现的
  * @author Lucky Pan
  * @date 2022/4/14 17:38
  */

@@ -1,19 +1,14 @@
-package cn.pan.connor.transport;
+package cn.pan.connor.core.transport;
 
-import cn.pan.connor.handle.codec.RpcCodecDecoder;
-import cn.pan.connor.handle.codec.RpcCodecEncoder;
-import cn.pan.connor.handle.resp.RegistryRespHandle;
-import io.netty.channel.ChannelInboundHandlerAdapter;
+import cn.pan.connor.core.handle.codec.RpcCodecDecoder;
+import cn.pan.connor.core.handle.codec.RpcCodecEncoder;
+import cn.pan.connor.core.handle.resp.RegistryRespHandle;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * <p>
@@ -23,12 +18,9 @@ import java.util.List;
  * @date 2022/4/14
  */
 @Slf4j
-@Component
 public class ClientChannelInitializer extends ChannelInitializer<SocketChannel> {
-
     /**
      * 基础的初始化
-     * @param socketChannel {@link SocketChannel}
      */
     @Override
     protected void initChannel(SocketChannel socketChannel) {
@@ -56,6 +48,7 @@ public class ClientChannelInitializer extends ChannelInitializer<SocketChannel> 
         pipeline.addLast(RpcCodecDecoder.NAME, new RpcCodecDecoder());
         // 对象转字节
         pipeline.addLast(RpcCodecEncoder.NAME, new RpcCodecEncoder());
+
         // 入站 RegistryResp
         pipeline.addLast(RegistryRespHandle.NAME, new RegistryRespHandle());
 
