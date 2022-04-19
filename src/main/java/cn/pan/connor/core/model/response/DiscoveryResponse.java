@@ -1,4 +1,4 @@
-package cn.pan.connor.core.transport.response;
+package cn.pan.connor.core.model.response;
 
 import cn.pan.connor.common.consts.RpcKind;
 import cn.pan.connor.core.handle.codec.RpcCodec;

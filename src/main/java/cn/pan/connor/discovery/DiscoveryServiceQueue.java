@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 
 /**
  * @author Lucky Pan

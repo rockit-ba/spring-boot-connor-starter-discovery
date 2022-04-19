@@ -1,7 +1,7 @@
 package cn.pan.connor.core.handle.resp;
 
-import cn.pan.connor.core.transport.response.DiscoveryResponse;
-import cn.pan.connor.core.transport.response.DiscoveryServiceIdsResponse;
+import cn.pan.connor.core.model.response.DiscoveryResponse;
+import cn.pan.connor.core.model.response.DiscoveryServiceIdsResponse;
 import cn.pan.connor.discovery.DiscoveryServiceQueue;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;

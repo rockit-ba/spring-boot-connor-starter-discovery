@@ -1,9 +1,8 @@
-package cn.pan.connor.core.transport.request;
+package cn.pan.connor.core.model.request;
 
 import cn.hutool.core.lang.Assert;
 import cn.pan.connor.common.consts.RpcKind;
 import cn.pan.connor.core.handle.codec.RpcCodec;
-import cn.pan.connor.core.model.NewService;
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;

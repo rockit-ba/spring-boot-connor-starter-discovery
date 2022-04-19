@@ -1,4 +1,4 @@
-package cn.pan.connor.core.transport.request;
+package cn.pan.connor.core.model.request;
 
 import cn.hutool.core.lang.Assert;
 import cn.pan.connor.common.consts.RpcKind;

@@ -2,7 +2,7 @@ package cn.pan.connor.serviceregistry;
 
 import cn.pan.connor.common.utils.JsonUtil;
 import cn.pan.connor.core.transport.ConnorClient;
-import cn.pan.connor.core.transport.request.RegistryRequest;
+import cn.pan.connor.core.model.request.RegistryRequest;
 import io.netty.channel.ChannelFuture;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

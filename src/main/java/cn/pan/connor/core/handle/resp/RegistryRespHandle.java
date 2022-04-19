@@ -1,7 +1,7 @@
 package cn.pan.connor.core.handle.resp;
 
 import cn.pan.connor.common.utils.JsonUtil;
-import cn.pan.connor.core.transport.response.RegistryResponse;
+import cn.pan.connor.core.model.response.RegistryResponse;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,7 @@ public class RegistryRespHandle extends SimpleChannelInboundHandler<RegistryResp
 	protected void channelRead0(ChannelHandlerContext ctx, RegistryResponse msg) {
 		log.info("RegistryRespHandle: {}", JsonUtil.toStr(msg));
 
-		if (msg.isFlag()) {
+		if (msg.isSuccess()) {
 			log.info("Service register success: {}", msg.getServiceName());
 		}else {
 			log.error("Service register fail: {}", msg.getServiceName());

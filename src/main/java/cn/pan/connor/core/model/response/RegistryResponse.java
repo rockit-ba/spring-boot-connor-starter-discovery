@@ -1,4 +1,4 @@
-package cn.pan.connor.core.transport.response;
+package cn.pan.connor.core.model.response;
 
 import cn.pan.connor.core.handle.codec.RpcCodec;
 import cn.pan.connor.common.consts.RpcKind;
@@ -18,7 +18,7 @@ public class RegistryResponse implements RpcCodec {
     @SerializedName("service_name")
     private String serviceName;
 
-    private boolean flag;
+    private boolean success;
 
     @Override
     public String getRpcKind() {

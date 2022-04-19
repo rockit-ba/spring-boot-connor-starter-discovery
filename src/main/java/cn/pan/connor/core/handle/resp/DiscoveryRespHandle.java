@@ -1,8 +1,6 @@
 package cn.pan.connor.core.handle.resp;
 
-import cn.pan.connor.common.utils.JsonUtil;
-import cn.pan.connor.core.transport.response.DiscoveryResponse;
-import cn.pan.connor.core.transport.response.RegistryResponse;
+import cn.pan.connor.core.model.response.DiscoveryResponse;
 import cn.pan.connor.discovery.DiscoveryServiceQueue;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -20,8 +18,8 @@ public class DiscoveryRespHandle extends SimpleChannelInboundHandler<DiscoveryRe
     public static final String NAME = "DiscoveryRespHandle";
 
 	@Override
-	protected void channelRead0(ChannelHandlerContext context, DiscoveryResponse discoveryResponse) throws Exception {
+	protected void channelRead0(ChannelHandlerContext context, DiscoveryResponse response) throws Exception {
 		log.info("accept Connor server discovery service");
-		DiscoveryServiceQueue.addService(discoveryResponse.getServiceName(),discoveryResponse.getServices());
+		DiscoveryServiceQueue.addService(response.getServiceName(),response.getServices());
 	}
 }

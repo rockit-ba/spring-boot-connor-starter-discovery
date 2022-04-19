@@ -11,7 +11,7 @@ public interface RpcKind {
      */
     String REGISTRY = "0";
     /**
-     * 服务发现
+     * 服务发现:根据service-name 获取service list
      */
     String DISCOVERY = "1";
 
