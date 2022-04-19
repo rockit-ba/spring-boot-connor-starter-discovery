@@ -16,18 +16,13 @@ import java.util.List;
 @Slf4j
 @Data
 public class DiscoveryServiceIdsResponse implements RpcCodec {
-    /**
-     * 请求类型
-     */
-    @SerializedName("rpc_kind")
-    private final String rpcKind = RpcKind.DISCOVERY_IDS;
 
     @SerializedName("service_ids")
     private List<String> serviceIds;
 
     @Override
     public String getRpcKind() {
-        return rpcKind;
+        return RpcKind.DISCOVERY_IDS;
     }
 
 }

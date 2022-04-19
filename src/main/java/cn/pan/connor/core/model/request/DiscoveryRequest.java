@@ -16,11 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 @Data
 public class DiscoveryRequest implements RpcCodec {
     /**
-     * 请求类型
-     */
-    @SerializedName("rpc_kind")
-    private final String rpcKind = RpcKind.DISCOVERY;
-    /**
      * 查询的服务 name
      */
     @SerializedName("service_name")
@@ -34,7 +29,7 @@ public class DiscoveryRequest implements RpcCodec {
 
     @Override
     public String getRpcKind() {
-        return rpcKind;
+        return RpcKind.DISCOVERY;
     }
 
 }

@@ -15,9 +15,6 @@ import java.util.List;
  */
 @Data
 public class DiscoveryResponse implements RpcCodec {
-    @SerializedName("rpc_kind")
-    private final String rpcKind = RpcKind.DISCOVERY;
-
     @SerializedName("service_name")
     private String serviceName;
 
@@ -26,6 +23,6 @@ public class DiscoveryResponse implements RpcCodec {
 
     @Override
     public String getRpcKind() {
-        return rpcKind;
+        return RpcKind.DISCOVERY;
     }
 }

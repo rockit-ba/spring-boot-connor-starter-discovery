@@ -12,9 +12,6 @@ import lombok.Data;
  */
 @Data
 public class RegistryResponse implements RpcCodec {
-    @SerializedName("rpc_kind")
-    private final String rpcKind = RpcKind.REGISTRY;
-
     @SerializedName("service_name")
     private String serviceName;
 
@@ -22,6 +19,6 @@ public class RegistryResponse implements RpcCodec {
 
     @Override
     public String getRpcKind() {
-        return rpcKind;
+        return RpcKind.REGISTRY;
     }
 }

@@ -14,15 +14,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Data
 public class DiscoveryServiceIdsRequest implements RpcCodec {
-    /**
-     * 请求类型
-     */
-    @SerializedName("rpc_kind")
-    private final String rpcKind = RpcKind.DISCOVERY_IDS;
 
     @Override
     public String getRpcKind() {
-        return rpcKind;
+        return RpcKind.DISCOVERY_IDS;
     }
 
 }

@@ -17,11 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 @Data
 public class RegistryRequest implements RpcCodec {
     /**
-     * 请求类型
-     */
-    @SerializedName("rpc_kind")
-    private final String rpcKind = RpcKind.REGISTRY;
-    /**
      * 发起服务注册的 信息
      * {@link NewService}
      */
@@ -36,7 +31,7 @@ public class RegistryRequest implements RpcCodec {
 
     @Override
     public String getRpcKind() {
-        return rpcKind;
+        return RpcKind.REGISTRY;
     }
 
 }
