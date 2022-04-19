@@ -3,6 +3,8 @@ package cn.pan.connor.core.transport;
 import cn.pan.connor.common.utils.JsonUtil;
 import cn.pan.connor.core.conf.ConnorDiscoveryProperties;
 import cn.pan.connor.core.handle.codec.RpcCodec;
+import cn.pan.connor.core.transport.request.DiscoveryRequest;
+import cn.pan.connor.core.transport.request.DiscoveryServiceIdsRequest;
 import cn.pan.connor.serviceregistry.ConnorRegistration;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -18,11 +20,11 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2022/4/13 14:30
  */
 @Slf4j
-public class Client {
+public class ConnorClient {
     private final Channel channel;
     private final NioEventLoopGroup loopGroup;
 
-    public Client(ConnorDiscoveryProperties properties) {
+    public ConnorClient(ConnorDiscoveryProperties properties) {
         loopGroup = new NioEventLoopGroup(Runtime.getRuntime().availableProcessors());
         Bootstrap handler = new Bootstrap()
                 .group(loopGroup)
@@ -63,6 +65,21 @@ public class Client {
     public ChannelFuture send(RpcCodec rpcCodec) {
         log.info("Send rpc: {}", JsonUtil.toStr(rpcCodec));
         return channel.writeAndFlush(rpcCodec);
+    }
+
+    /**
+     * 根据service name  获取 所有的service
+     */
+    public void asyncGetService(String serviceName) {
+        DiscoveryRequest discoveryRequest = new DiscoveryRequest(serviceName);
+        this.send(discoveryRequest);
+    }
+
+    /**
+     * 获取所有的serviceIDS
+     */
+    public void asyncGetAllServiceIds() {
+        this.send(new DiscoveryServiceIdsRequest());
     }
 
     /**

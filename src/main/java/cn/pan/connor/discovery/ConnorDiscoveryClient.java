@@ -1,10 +1,13 @@
 package cn.pan.connor.discovery;
 
+import cn.pan.connor.core.conf.ConnorDiscoveryProperties;
+import cn.pan.connor.core.model.NewService;
+import cn.pan.connor.core.transport.ConnorClient;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * DiscoveryClient 实现类
@@ -12,11 +15,13 @@ import java.util.stream.Collectors;
  * @date 2022/4/18 12:02
  */
 public class ConnorDiscoveryClient implements DiscoveryClient {
+    private final ConnorClient client;
+    private final ConnorDiscoveryProperties properties;
 
-    private final List<ServiceInstance> serviceInstances;
-
-    public ConnorDiscoveryClient(List<ServiceInstance> serviceInstances) {
-        this.serviceInstances = serviceInstances;
+    public ConnorDiscoveryClient(ConnorDiscoveryProperties properties,
+                                 ConnorClient client) {
+        this.properties = properties;
+        this.client = client;
     }
 
     @Override
@@ -25,16 +30,22 @@ public class ConnorDiscoveryClient implements DiscoveryClient {
     }
 
     @Override
-    public List<ServiceInstance> getInstances(String serviceId) {
-        return serviceInstances.stream()
-                .filter(ele -> ele.getServiceId().equals(serviceId))
-                .collect(Collectors.toList());
+    public List<ServiceInstance> getInstances(String serviceName) {
+        List<ServiceInstance> instances = new ArrayList<>();
+
+        this.client.asyncGetService(serviceName);
+        final List<NewService> services = DiscoveryServiceQueue.getService(serviceName);
+        services.forEach(ele -> {
+            instances.add(new ConnorServiceInstance(ele));
+        });
+
+        return instances;
+
     }
 
     @Override
     public List<String> getServices() {
-        return serviceInstances.stream()
-                .map(ServiceInstance::getServiceId)
-                .collect(Collectors.toList());
+        this.client.asyncGetAllServiceIds();
+        return DiscoveryServiceQueue.getServiceIds();
     }
 }

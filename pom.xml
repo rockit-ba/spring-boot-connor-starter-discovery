@@ -8,7 +8,7 @@
 	<version>0.0.1</version>
 
 	<name>connor-starter</name>
-	<description>connor client springboot starter</description>
+	<description>connor connorClient springboot starter</description>
 
 	<properties>
 		<java.version>17</java.version>

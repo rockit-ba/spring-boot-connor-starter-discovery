@@ -1,7 +1,7 @@
 package cn.pan.connor;
 
 import cn.pan.connor.core.conf.ConnorDiscoveryProperties;
-import cn.pan.connor.core.transport.Client;
+import cn.pan.connor.core.transport.ConnorClient;
 import cn.pan.connor.discovery.ConnorDiscoveryClient;
 import cn.pan.connor.serviceregistry.ConnorAutoServiceRegistration;
 import cn.pan.connor.serviceregistry.ConnorRegistration;
@@ -36,8 +36,8 @@ public class ConnorAutoConfiguration {
      * @return Client
      */
     @Bean
-    public Client client(final ConnorDiscoveryProperties properties) {
-        return new Client(properties);
+    public ConnorClient client(final ConnorDiscoveryProperties properties) {
+        return new ConnorClient(properties);
     }
 
     /**
@@ -61,12 +61,11 @@ public class ConnorAutoConfiguration {
 
     /**
      * 服务注册发现客户端
-     * @param serviceInstances {@link List<ServiceInstance>}
-     * @return ConnorDiscoveryClient
      */
     @Bean
-    public ConnorDiscoveryClient connorDiscoveryClient(final List<ServiceInstance> serviceInstances) {
-        return new ConnorDiscoveryClient(serviceInstances);
+    public ConnorDiscoveryClient connorDiscoveryClient(final ConnorDiscoveryProperties properties,
+                                                       final ConnorClient connorClient) {
+        return new ConnorDiscoveryClient(properties, connorClient);
     }
 
     /**

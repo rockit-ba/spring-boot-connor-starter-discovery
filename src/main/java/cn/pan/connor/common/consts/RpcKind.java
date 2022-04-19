@@ -14,4 +14,9 @@ public interface RpcKind {
      * 服务发现
      */
     String DISCOVERY = "1";
+
+    /**
+     * 服务发现:获取所有的service IDS
+     */
+    String DISCOVERY_IDS = "2";
 }

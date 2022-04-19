@@ -28,4 +28,5 @@ public class ConnorDiscoveryProperties {
      */
     @NestedConfigurationProperty
     private Discovery discovery = new Discovery();
+
 }
