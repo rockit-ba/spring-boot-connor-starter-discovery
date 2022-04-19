@@ -20,13 +20,7 @@ public class ConnorRegistration implements Registration {
 
     public ConnorRegistration(ConnorDiscoveryProperties properties) {
         this.discovery = properties.getDiscovery();
-        this.service = NewService.builder()
-                .id(discovery.getServiceId())
-                .name(discovery.getServiceName())
-                .host(discovery.getHost())
-                .port(discovery.getPort())
-                .meta(discovery.getMeta()).build();
-        this.service.check();
+        this.service = NewService.fromProperties(properties);
     }
 
     public NewService getService() {

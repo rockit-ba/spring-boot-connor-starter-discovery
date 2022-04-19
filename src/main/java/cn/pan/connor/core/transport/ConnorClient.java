@@ -1,10 +1,13 @@
 package cn.pan.connor.core.transport;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.pan.connor.common.utils.JsonUtil;
 import cn.pan.connor.core.conf.ConnorDiscoveryProperties;
 import cn.pan.connor.core.handle.codec.RpcCodec;
+import cn.pan.connor.core.model.NewService;
 import cn.pan.connor.core.model.request.DiscoveryRequest;
 import cn.pan.connor.core.model.request.DiscoveryServiceIdsRequest;
+import cn.pan.connor.discovery.DiscoveryServiceCache;
 import cn.pan.connor.serviceregistry.ConnorRegistration;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -13,6 +16,8 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
+
 /**
  * Connor 客户端实例
  * 用于向服务端发送注册信息 {@link cn.pan.connor.serviceregistry.ConnorServiceRegistry#register(ConnorRegistration)}
@@ -20,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2022/4/13 14:30
  */
 @Slf4j
-public class ConnorClient {
+public class ConnorClient extends DiscoveryServiceCache{
     private final Channel channel;
     private final NioEventLoopGroup loopGroup;
 
@@ -68,17 +73,42 @@ public class ConnorClient {
     }
 
     /**
-     * 根据service name  获取 所有的service
+     * 获取 service list
      */
-    public void asyncGetService(String serviceName) {
+    public List<NewService> getService(String serviceName) {
+        List<NewService> cacheServiceList = getCacheServiceList(serviceName);
+        if (CollUtil.isNotEmpty(cacheServiceList)) {
+            return cacheServiceList;
+        }
+        refreshService(serviceName);
+        return getServiceList(serviceName);
+    }
+
+    /**
+     * 获取所有的service-ids
+     * @return List<String>
+     */
+    public List<String> getAllServiceIds() {
+        List<String> cacheServiceIds = getCacheServiceIds();
+        if (CollUtil.isNotEmpty(cacheServiceIds)) {
+            return cacheServiceIds;
+        }
+        refreshServiceIds();
+        return getServiceIds();
+    }
+
+    /**
+     * 刷新本地的 service list
+     */
+    public void refreshService(String serviceName) {
         DiscoveryRequest discoveryRequest = new DiscoveryRequest(serviceName);
         this.send(discoveryRequest);
     }
 
     /**
-     * 获取所有的serviceIDS
+     * 刷新本地的 serviceIDS
      */
-    public void asyncGetAllServiceIds() {
+    public void refreshServiceIds() {
         this.send(new DiscoveryServiceIdsRequest());
     }
 

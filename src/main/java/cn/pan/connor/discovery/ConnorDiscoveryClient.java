@@ -16,11 +16,8 @@ import java.util.List;
  */
 public class ConnorDiscoveryClient implements DiscoveryClient {
     private final ConnorClient client;
-    private final ConnorDiscoveryProperties properties;
 
-    public ConnorDiscoveryClient(ConnorDiscoveryProperties properties,
-                                 ConnorClient client) {
-        this.properties = properties;
+    public ConnorDiscoveryClient(ConnorClient client) {
         this.client = client;
     }
 
@@ -33,11 +30,8 @@ public class ConnorDiscoveryClient implements DiscoveryClient {
     public List<ServiceInstance> getInstances(String serviceName) {
         List<ServiceInstance> instances = new ArrayList<>();
 
-        this.client.asyncGetService(serviceName);
-        final List<NewService> services = DiscoveryServiceQueue.getService(serviceName);
-        services.forEach(ele -> {
-            instances.add(new ConnorServiceInstance(ele));
-        });
+        final List<NewService> services = this.client.getService(serviceName);
+        services.forEach(ele -> instances.add(new ConnorServiceInstance(ele)));
 
         return instances;
 
@@ -45,7 +39,6 @@ public class ConnorDiscoveryClient implements DiscoveryClient {
 
     @Override
     public List<String> getServices() {
-        this.client.asyncGetAllServiceIds();
-        return DiscoveryServiceQueue.getServiceIds();
+        return this.client.getAllServiceIds();
     }
 }

@@ -63,9 +63,8 @@ public class ConnorAutoConfiguration {
      * 服务注册发现客户端
      */
     @Bean
-    public ConnorDiscoveryClient connorDiscoveryClient(final ConnorDiscoveryProperties properties,
-                                                       final ConnorClient connorClient) {
-        return new ConnorDiscoveryClient(properties, connorClient);
+    public ConnorDiscoveryClient connorDiscoveryClient(final ConnorClient connorClient) {
+        return new ConnorDiscoveryClient(connorClient);
     }
 
     /**

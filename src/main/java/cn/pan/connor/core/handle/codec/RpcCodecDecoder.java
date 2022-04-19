@@ -30,17 +30,10 @@ public class RpcCodecDecoder extends ByteToMessageDecoder {
         String json = content.substring(1);
 
         switch (type) {
-            case RpcKind.REGISTRY:
-                list.add(JsonUtil.toBean(json, RegistryResponse.class));
-                break;
-            case RpcKind.DISCOVERY:
-                list.add(JsonUtil.toBean(json, DiscoveryResponse.class));
-                break;
-            case RpcKind.DISCOVERY_IDS:
-                list.add(JsonUtil.toBean(json, DiscoveryServiceIdsResponse.class));
-            default:
-                log.error("response parser fail ");
-                break;
+            case RpcKind.REGISTRY -> list.add(JsonUtil.toBean(json, RegistryResponse.class));
+            case RpcKind.DISCOVERY -> list.add(JsonUtil.toBean(json, DiscoveryResponse.class));
+            case RpcKind.DISCOVERY_IDS -> list.add(JsonUtil.toBean(json, DiscoveryServiceIdsResponse.class));
+            default -> log.error("response parser fail ");
         }
     }
 }

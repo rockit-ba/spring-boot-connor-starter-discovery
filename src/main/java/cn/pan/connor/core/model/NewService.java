@@ -1,6 +1,8 @@
 package cn.pan.connor.core.model;
 
 import cn.hutool.core.lang.Assert;
+import cn.pan.connor.core.conf.ConnorDiscoveryProperties;
+import cn.pan.connor.core.conf.Discovery;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,6 +28,18 @@ public class NewService {
     private String host;
     private Integer port;
     private Map<String, String> meta;
+
+    public static NewService fromProperties(ConnorDiscoveryProperties properties) {
+        Discovery discovery = properties.getDiscovery();
+        NewService newService = NewService.builder()
+                .id(discovery.getServiceId())
+                .name(discovery.getServiceName())
+                .host(discovery.getHost())
+                .port(discovery.getPort())
+                .meta(discovery.getMeta()).build();
+        newService.check();
+        return newService;
+    }
 
     /**
      * 合规性校验
