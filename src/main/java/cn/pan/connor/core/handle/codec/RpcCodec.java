@@ -9,7 +9,7 @@ package cn.pan.connor.core.handle.codec;
  */
 public interface RpcCodec {
     /**
-     * 获取请求类型
+     * 像服务端发送的 请求类型
      * @return type
      */
     String getRpcKind();

@@ -14,15 +14,10 @@ import java.util.List;
  * @date 2022/4/14 17:17
  */
 @Data
-public class DiscoveryResponse implements RpcCodec {
+public class DiscoveryResponse{
     @SerializedName("service_name")
     private String serviceName;
 
     @SerializedName("services")
     private List<NewService> services;
-
-    @Override
-    public String getRpcKind() {
-        return RpcKind.DISCOVERY;
-    }
 }

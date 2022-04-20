@@ -11,14 +11,9 @@ import lombok.Data;
  * @date 2022/4/14 17:17
  */
 @Data
-public class RegistryResponse implements RpcCodec {
+public class RegistryResponse{
     @SerializedName("service_name")
     private String serviceName;
 
     private boolean success;
-
-    @Override
-    public String getRpcKind() {
-        return RpcKind.REGISTRY;
-    }
 }
