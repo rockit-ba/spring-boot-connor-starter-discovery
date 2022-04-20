@@ -28,7 +28,7 @@ public class ConnorServiceRegistry implements ServiceRegistry<ConnorRegistration
         ChannelFuture future = connorClient.send(registryRequest);
         future.addListener(ele -> {
            if (future.isSuccess()) {
-               log.info("Service register send success：{}",registryRequest.getNewService().getName());
+               log.info("Service register send success：{}",registryRequest.newService().getName());
            }
         });
     }

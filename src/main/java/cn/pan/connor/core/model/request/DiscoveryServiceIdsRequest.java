@@ -2,8 +2,6 @@ package cn.pan.connor.core.model.request;
 
 import cn.pan.connor.common.consts.RpcKind;
 import cn.pan.connor.core.handle.codec.RpcCodec;
-import com.google.gson.annotations.SerializedName;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -12,8 +10,7 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2022/4/14 17:17
  */
 @Slf4j
-@Data
-public class DiscoveryServiceIdsRequest implements RpcCodec {
+public record DiscoveryServiceIdsRequest() implements RpcCodec {
 
     @Override
     public String getRpcKind() {
