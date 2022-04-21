@@ -1,7 +1,7 @@
 package cn.pan.connor.core.handle.resp;
 
 import cn.pan.connor.core.model.response.DiscoveryResponse;
-import cn.pan.connor.discovery.DiscoveryServiceCache;
+import cn.pan.connor.core.transport.ClientCache;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * <p>
  *     服务发现响应handle
+ *     触发：{@link cn.pan.connor.core.transport.ConnorClient#refreshService(String)}
  * </p>
  * @author jixinag
  * @date 2022/4/18
@@ -20,6 +21,6 @@ public class DiscoveryRespHandle extends SimpleChannelInboundHandler<DiscoveryRe
 	@Override
 	protected void channelRead0(ChannelHandlerContext context, DiscoveryResponse response) throws Exception {
 		log.info("accept Connor server discovery service");
-		DiscoveryServiceCache.cacheServiceList(response.getServiceName(),response.getServices());
+		ClientCache.ServiceCache.cache(response.getServiceName(),response.getServices());
 	}
 }

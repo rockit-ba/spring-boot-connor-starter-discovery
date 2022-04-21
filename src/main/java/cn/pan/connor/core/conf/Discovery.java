@@ -52,4 +52,9 @@ public class Discovery {
      * is register
      */
     private boolean register = true;
+
+    /**
+     * discovery timeout ，unit ms
+     */
+    private int timeout = 150;
 }

@@ -7,7 +7,6 @@ import cn.pan.connor.core.handle.codec.RpcCodec;
 import cn.pan.connor.core.model.NewService;
 import cn.pan.connor.core.model.request.DiscoveryRequest;
 import cn.pan.connor.core.model.request.DiscoveryServiceIdsRequest;
-import cn.pan.connor.discovery.DiscoveryServiceCache;
 import cn.pan.connor.serviceregistry.ConnorRegistration;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -25,18 +24,20 @@ import java.util.List;
  * @date 2022/4/13 14:30
  */
 @Slf4j
-public class ConnorClient extends DiscoveryServiceCache{
+public class ConnorClient extends ClientCache {
     private final Channel channel;
     private final NioEventLoopGroup loopGroup;
+    private final ConnorDiscoveryProperties properties;
 
     public ConnorClient(ConnorDiscoveryProperties properties) {
+        this.properties = properties;
         loopGroup = new NioEventLoopGroup(Runtime.getRuntime().availableProcessors());
         Bootstrap handler = new Bootstrap()
                 .group(loopGroup)
                 .channel(NioSocketChannel.class)
                 .handler(new ClientChannelInitializer());
 
-        ChannelFuture connect = handler.connect(properties.getHost(), properties.getPort());
+        ChannelFuture connect = handler.connect(this.properties.getHost(), this.properties.getPort());
         connect.addListener(ele -> {
             if (ele.isSuccess()) {
                 log.info("Connect connor-server success");
@@ -76,12 +77,12 @@ public class ConnorClient extends DiscoveryServiceCache{
      * 获取 service list
      */
     public List<NewService> getService(String serviceName) {
-        List<NewService> cacheServiceList = getCacheServiceList(serviceName);
+        List<NewService> cacheServiceList = ServiceCache.getCache(serviceName);
         if (CollUtil.isNotEmpty(cacheServiceList)) {
             return cacheServiceList;
         }
         refreshService(serviceName);
-        return getServiceList(serviceName);
+        return ServiceCache.block(serviceName, properties.getDiscovery().getTimeout());
     }
 
     /**
@@ -89,16 +90,18 @@ public class ConnorClient extends DiscoveryServiceCache{
      * @return List<String>
      */
     public List<String> getAllServiceIds() {
-        List<String> cacheServiceIds = getCacheServiceIds();
+        List<String> cacheServiceIds = ServiceIdsCache.getCache();
         if (CollUtil.isNotEmpty(cacheServiceIds)) {
             return cacheServiceIds;
         }
         refreshServiceIds();
-        return getServiceIds();
+        return ServiceIdsCache.block(properties.getDiscovery().getTimeout());
     }
 
     /**
      * 刷新本地的 service list
+     * 此动作只是向Connor server 发送对应的获取request
+     * 具体的将获取到的数据放入本地缓存 是在 {@link cn.pan.connor.core.handle.resp.DiscoveryRespHandle 中做的}
      */
     public void refreshService(String serviceName) {
         DiscoveryRequest discoveryRequest = new DiscoveryRequest(serviceName);

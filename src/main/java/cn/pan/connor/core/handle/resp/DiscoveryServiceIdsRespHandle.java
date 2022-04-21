@@ -1,7 +1,7 @@
 package cn.pan.connor.core.handle.resp;
 
 import cn.pan.connor.core.model.response.DiscoveryServiceIdsResponse;
-import cn.pan.connor.discovery.DiscoveryServiceCache;
+import cn.pan.connor.core.transport.ClientCache;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +19,6 @@ public class DiscoveryServiceIdsRespHandle extends SimpleChannelInboundHandler<D
 
 	@Override
 	protected void channelRead0(ChannelHandlerContext context, DiscoveryServiceIdsResponse response) throws Exception {
-		DiscoveryServiceCache.cacheServiceIds(response.getServiceIds());
+		ClientCache.ServiceIdsCache.cache(response.getServiceIds());
 	}
 }
