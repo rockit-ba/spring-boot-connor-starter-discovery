@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * <p>
  *     服务发现响应handle
- *     触发：{@link cn.pan.connor.core.transport.ConnorClient#refreshService(String)}
+ *     触发：{@link cn.pan.connor.core.transport.ConnorClient}
  * </p>
  * @author jixinag
  * @date 2022/4/18
@@ -19,7 +19,7 @@ public class DiscoveryRespHandle extends SimpleChannelInboundHandler<DiscoveryRe
     public static final String NAME = "DiscoveryRespHandle";
 
 	@Override
-	protected void channelRead0(ChannelHandlerContext context, DiscoveryResponse response) throws Exception {
+	protected void channelRead0(ChannelHandlerContext context, DiscoveryResponse response) {
 		log.info("accept Connor server discovery service");
 		ClientCache.ServiceCache.cache(response.getServiceName(),response.getServices());
 	}

@@ -26,7 +26,7 @@ public class ClientChannelInitializer extends ChannelInitializer<SocketChannel> 
      */
     @Override
     protected void initChannel(SocketChannel socketChannel) {
-        /**
+        /*
          * 全局处理器流水线
          */
         ChannelPipeline pipeline = socketChannel.pipeline();

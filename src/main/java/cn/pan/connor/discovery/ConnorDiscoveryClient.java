@@ -1,6 +1,5 @@
 package cn.pan.connor.discovery;
 
-import cn.pan.connor.core.conf.ConnorDiscoveryProperties;
 import cn.pan.connor.core.model.NewService;
 import cn.pan.connor.core.transport.ConnorClient;
 import org.springframework.cloud.client.ServiceInstance;
