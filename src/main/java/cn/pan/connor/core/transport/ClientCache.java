@@ -3,6 +3,7 @@ package cn.pan.connor.core.transport;
 import cn.hutool.core.util.StrUtil;
 import cn.pan.connor.core.model.NewService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.ReflectionUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +35,7 @@ public class ClientCache {
             try {
                 SERVICES_BLOCK.put(BLOCK_KEY);
             } catch (InterruptedException e) {
-                log.error(e.getMessage(),e);
+                ReflectionUtils.rethrowRuntimeException(e);
             }
             SERVICES.put(serviceName,serviceList);
         }
@@ -55,7 +56,7 @@ public class ClientCache {
                     throw new RuntimeException(StrUtil.format("discovery timeout {} ！",timeout));
                 }
             } catch (InterruptedException e) {
-                log.error(e.getMessage(),e);
+                ReflectionUtils.rethrowRuntimeException(e);
             }
             return getCache(serviceName);
         }
@@ -73,7 +74,7 @@ public class ClientCache {
             try {
                 SERVICE_IDS_BLOCK.put(BLOCK_KEY);
             } catch (InterruptedException e) {
-                log.error(e.getMessage(),e);
+                ReflectionUtils.rethrowRuntimeException(e);
             }
             SERVICE_IDS.clear();
             SERVICE_IDS.addAll(serviceIds);
@@ -95,7 +96,7 @@ public class ClientCache {
                     throw new RuntimeException(StrUtil.format("discovery timeout {} ！",timeout));
                 }
             } catch (InterruptedException e) {
-                log.error(e.getMessage(),e);
+                ReflectionUtils.rethrowRuntimeException(e);
             }
             return getCache();
         }

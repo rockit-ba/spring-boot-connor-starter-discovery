@@ -60,7 +60,6 @@ public class ConnorClient extends ClientCache {
                 log.info("Channel is closed");
             }
         });
-        this.sourceClose();
     }
 
     /**
@@ -103,7 +102,7 @@ public class ConnorClient extends ClientCache {
      * 此动作只是向Connor server 发送对应的获取request
      * 具体的将获取到的数据放入本地缓存 是在 {@link cn.pan.connor.core.handle.resp.DiscoveryRespHandle 中做的}
      */
-    public void refreshService(String serviceName) {
+    private void refreshService(String serviceName) {
         DiscoveryRequest discoveryRequest = new DiscoveryRequest(serviceName);
         this.send(discoveryRequest);
     }
@@ -111,21 +110,17 @@ public class ConnorClient extends ClientCache {
     /**
      * 刷新本地的 serviceIDS
      */
-    public void refreshServiceIds() {
+    private void refreshServiceIds() {
         this.send(new DiscoveryServiceIdsRequest());
     }
 
     /**
      * 资源关闭回调
      */
-    private void sourceClose() {
-        Runtime.getRuntime()
-                .addShutdownHook(new Thread(() -> {
-                    channel.flush();
-                    channel.close();
-                    log.info("NioEventLoopGroup source close");
-                    loopGroup.shutdownGracefully();
-                }, "shutdown"));
+    public void sourceClose() {
+        channel.flush();
+        channel.close();
+        loopGroup.shutdownGracefully();
     }
 
 }
