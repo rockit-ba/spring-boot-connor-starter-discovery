@@ -18,7 +18,7 @@ public class DiscoveryServiceIdsRespHandle extends SimpleChannelInboundHandler<D
     public static final String NAME = "DiscoveryServiceIdsRespHandle";
 
 	@Override
-	protected void channelRead0(ChannelHandlerContext context, DiscoveryServiceIdsResponse response) throws Exception {
+	protected void channelRead0(ChannelHandlerContext context, DiscoveryServiceIdsResponse response) {
 		ClientCache.ServiceIdsCache.cache(response.getServiceIds());
 	}
 }

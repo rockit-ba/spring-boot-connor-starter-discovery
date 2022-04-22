@@ -39,11 +39,6 @@ public class Discovery {
     private boolean secure = false;
 
     /**
-     * URI
-     */
-    private URI uri;
-
-    /**
      * client service custom data
      */
     private HashMap<String,String> meta;

@@ -5,6 +5,7 @@ import cn.pan.connor.common.consts.RpcKind;
 import cn.pan.connor.core.model.response.DiscoveryResponse;
 import cn.pan.connor.core.model.response.DiscoveryServiceIdsResponse;
 import cn.pan.connor.core.model.response.RegistryResponse;
+import cn.pan.connor.core.model.response.ServiceCheckResponse;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
@@ -33,6 +34,7 @@ public class RpcCodecDecoder extends ByteToMessageDecoder {
             case RpcKind.REGISTRY -> list.add(JsonUtil.toBean(json, RegistryResponse.class));
             case RpcKind.DISCOVERY -> list.add(JsonUtil.toBean(json, DiscoveryResponse.class));
             case RpcKind.DISCOVERY_IDS -> list.add(JsonUtil.toBean(json, DiscoveryServiceIdsResponse.class));
+            case RpcKind.SERVICE_CHECK -> list.add(JsonUtil.toBean(json, ServiceCheckResponse.class));
             default -> log.error("response parser fail ");
         }
     }

@@ -1,12 +1,16 @@
 package cn.pan.connor.serviceregistry;
 
+import cn.hutool.core.util.StrUtil;
 import cn.pan.connor.common.utils.JsonUtil;
-import cn.pan.connor.core.transport.ConnorClient;
+import cn.pan.connor.core.model.request.DeregistryRequest;
 import cn.pan.connor.core.model.request.RegistryRequest;
+import cn.pan.connor.core.transport.ConnorClient;
 import io.netty.channel.ChannelFuture;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
+
+import static org.springframework.boot.actuate.health.Status.*;
 
 /**
  * 服务注册实现类
@@ -28,7 +32,7 @@ public class ConnorServiceRegistry implements ServiceRegistry<ConnorRegistration
         ChannelFuture future = connorClient.send(registryRequest);
         future.addListener(ele -> {
            if (future.isSuccess()) {
-               log.info("Service register send success：{}",registryRequest.newService().getName());
+               log.info("Registering service with consul: " + registration.getService());
            }
         });
     }
@@ -39,22 +43,41 @@ public class ConnorServiceRegistry implements ServiceRegistry<ConnorRegistration
      */
     @Override
     public void deregister(ConnorRegistration registration) {
-        log.info("Service deregister：{}",JsonUtil.toStr(registration.getService().getName()));
+        log.info("Service deregister：{}",JsonUtil.toStr(registration.getServiceId()));
+        DeregistryRequest deregistryRequest =
+                new DeregistryRequest(registration.getService().getName(),registration.getServiceId());
+        connorClient.send(deregistryRequest);
     }
 
     @Override
     public void close() {
-        log.info("Service close");
+        connorClient.sourceClose();
     }
 
     @Override
     public void setStatus(ConnorRegistration registration, String status) {
         log.info("Registry setStatus：{}",status);
+        // 服务退出/下线（与down的状态有所区别，down是机器自己不可用，OUT_OF_SERVICE 是认为将服务下线）
+        if (status.equalsIgnoreCase(OUT_OF_SERVICE.getCode())) {
+            this.deregister(registration);
+        }
+        else if (status.equalsIgnoreCase(UP.getCode())) {
+            this.register(registration);
+        }
+        else {
+            throw new IllegalArgumentException("Unknown status: " + status);
+        }
+
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public <T> T getStatus(ConnorRegistration registration) {
-        log.info("Segistry getStatus：{}",registration);
-        return null;
+    public Object getStatus(ConnorRegistration registration) {
+        String check = this.connorClient.serviceCheck(registration.getInstanceId());
+        if (StrUtil.isBlank(check)) {
+            return OUT_OF_SERVICE.getCode();
+        }
+        return UP.getCode();
     }
+
 }

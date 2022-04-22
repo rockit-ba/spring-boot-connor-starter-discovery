@@ -19,4 +19,14 @@ public interface RpcKind {
      * 服务发现:获取所有的service IDS
      */
     String DISCOVERY_IDS = "2";
+
+    /**
+     * 服务下线
+     */
+    String DEREGISTRY = "3";
+
+    /**
+     * 服务检测
+     */
+    String SERVICE_CHECK = "4";
 }
