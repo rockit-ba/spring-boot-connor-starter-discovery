@@ -24,4 +24,9 @@ public interface RpcKind {
      * 服务下线
      */
     String DEREGISTRY = "3";
+
+    /**
+     * 服务检测
+     */
+    String SERVICE_CHECK = "4";
 }

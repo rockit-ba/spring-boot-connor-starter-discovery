@@ -7,6 +7,7 @@ import cn.pan.connor.core.handle.codec.RpcCodec;
 import cn.pan.connor.core.model.NewService;
 import cn.pan.connor.core.model.request.DiscoveryRequest;
 import cn.pan.connor.core.model.request.DiscoveryServiceIdsRequest;
+import cn.pan.connor.core.model.request.ServiceCheckRequest;
 import cn.pan.connor.serviceregistry.ConnorRegistration;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -95,6 +96,14 @@ public class ConnorClient extends ClientCache {
         }
         refreshServiceIds();
         return ServiceIdsCache.block(properties.getDiscovery().getTimeout());
+    }
+
+    /**
+     * 根据service-id 进行状态检查
+     */
+    public String serviceCheck(String serviceId) {
+        this.send(new ServiceCheckRequest(serviceId));
+        return ServiceCheck.block(properties.getDiscovery().getTimeout());
     }
 
     /**

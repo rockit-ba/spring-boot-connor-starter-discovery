@@ -103,5 +103,39 @@ public class ClientCache {
 
     }
 
+    /**
+     * 服务状态检查
+     */
+    public static class ServiceCheck {
+        private static final SynchronousQueue<String> SERVICE_CHECK_BLOCK = new SynchronousQueue<>();
+
+        /**
+         * 设置服务端响应的数据
+         */
+        public static void putResp(String serviceId) {
+            try {
+                SERVICE_CHECK_BLOCK.put(serviceId);
+            } catch (InterruptedException e) {
+                ReflectionUtils.rethrowRuntimeException(e);
+            }
+        }
+
+        /**
+         * 同步获取响应的结果
+         * @return 查询的服务的id
+         */
+        protected static String block(int timeout) {
+            String msg = "";
+            try {
+                msg = SERVICE_CHECK_BLOCK.poll(timeout, TimeUnit.MILLISECONDS);
+                if (Objects.isNull(msg)) {
+                    throw new RuntimeException(StrUtil.format("check timeout {} ！",timeout));
+                }
+            } catch (InterruptedException e) {
+                ReflectionUtils.rethrowRuntimeException(e);
+            }
+            return msg;
+        }
+    }
 
 }

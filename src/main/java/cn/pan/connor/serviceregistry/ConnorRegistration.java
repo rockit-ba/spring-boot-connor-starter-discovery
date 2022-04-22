@@ -3,6 +3,7 @@ package cn.pan.connor.serviceregistry;
 import cn.pan.connor.core.conf.ConnorDiscoveryProperties;
 import cn.pan.connor.core.conf.Discovery;
 import cn.pan.connor.core.model.NewService;
+import org.springframework.cloud.client.DefaultServiceInstance;
 import org.springframework.cloud.client.serviceregistry.Registration;
 
 import java.net.URI;
@@ -28,8 +29,13 @@ public class ConnorRegistration implements Registration {
     }
 
     @Override
-    public String getServiceId() {
+    public String getInstanceId() {
         return getService().getId();
+    }
+
+    @Override
+    public String getServiceId() {
+        return getService().getName();
     }
 
     @Override
@@ -49,7 +55,7 @@ public class ConnorRegistration implements Registration {
 
     @Override
     public URI getUri() {
-        return discovery.getUri();
+        return DefaultServiceInstance.getUri(this);
     }
 
     @Override

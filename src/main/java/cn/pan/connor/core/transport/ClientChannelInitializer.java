@@ -5,6 +5,7 @@ import cn.pan.connor.core.handle.codec.RpcCodecEncoder;
 import cn.pan.connor.core.handle.resp.DiscoveryRespHandle;
 import cn.pan.connor.core.handle.resp.DiscoveryServiceIdsRespHandle;
 import cn.pan.connor.core.handle.resp.RegistryRespHandle;
+import cn.pan.connor.core.handle.resp.ServiceCheckRespHandle;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -55,7 +56,7 @@ public class ClientChannelInitializer extends ChannelInitializer<SocketChannel> 
         pipeline.addLast(RegistryRespHandle.NAME, new RegistryRespHandle());
         pipeline.addLast(DiscoveryRespHandle.NAME, new DiscoveryRespHandle());
         pipeline.addLast(DiscoveryServiceIdsRespHandle.NAME, new DiscoveryServiceIdsRespHandle());
-
+        pipeline.addLast(ServiceCheckRespHandle.NAME, new ServiceCheckRespHandle());
     }
 
 }

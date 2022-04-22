@@ -1,5 +1,6 @@
 package cn.pan.connor.serviceregistry;
 
+import cn.hutool.core.util.StrUtil;
 import cn.pan.connor.common.utils.JsonUtil;
 import cn.pan.connor.core.model.request.DeregistryRequest;
 import cn.pan.connor.core.model.request.RegistryRequest;
@@ -8,6 +9,8 @@ import io.netty.channel.ChannelFuture;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
+
+import static org.springframework.boot.actuate.health.Status.*;
 
 /**
  * 服务注册实现类
@@ -54,13 +57,27 @@ public class ConnorServiceRegistry implements ServiceRegistry<ConnorRegistration
     @Override
     public void setStatus(ConnorRegistration registration, String status) {
         log.info("Registry setStatus：{}",status);
+        // 服务退出/下线（与down的状态有所区别，down是机器自己不可用，OUT_OF_SERVICE 是认为将服务下线）
+        if (status.equalsIgnoreCase(OUT_OF_SERVICE.getCode())) {
+            this.deregister(registration);
+        }
+        else if (status.equalsIgnoreCase(UP.getCode())) {
+            this.register(registration);
+        }
+        else {
+            throw new IllegalArgumentException("Unknown status: " + status);
+        }
 
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public <T> T getStatus(ConnorRegistration registration) {
-        log.info("Segistry getStatus：{}",registration);
-        return null;
+    public Object getStatus(ConnorRegistration registration) {
+        String check = this.connorClient.serviceCheck(registration.getInstanceId());
+        if (StrUtil.isBlank(check)) {
+            return OUT_OF_SERVICE.getCode();
+        }
+        return UP.getCode();
     }
 
 }
