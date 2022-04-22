@@ -3,7 +3,7 @@ package cn.pan.connor.core.transport;
 import cn.pan.connor.core.handle.codec.RpcCodecDecoder;
 import cn.pan.connor.core.handle.codec.RpcCodecEncoder;
 import cn.pan.connor.core.handle.resp.DiscoveryRespHandle;
-import cn.pan.connor.core.handle.resp.DiscoveryServiceIdsRespHandle;
+import cn.pan.connor.core.handle.resp.DiscoveryServiceNamesRespHandle;
 import cn.pan.connor.core.handle.resp.RegistryRespHandle;
 import cn.pan.connor.core.handle.resp.ServiceCheckRespHandle;
 import io.netty.channel.ChannelInitializer;
@@ -55,7 +55,7 @@ public class ClientChannelInitializer extends ChannelInitializer<SocketChannel> 
         // 入站 RegistryResp
         pipeline.addLast(RegistryRespHandle.NAME, new RegistryRespHandle());
         pipeline.addLast(DiscoveryRespHandle.NAME, new DiscoveryRespHandle());
-        pipeline.addLast(DiscoveryServiceIdsRespHandle.NAME, new DiscoveryServiceIdsRespHandle());
+        pipeline.addLast(DiscoveryServiceNamesRespHandle.NAME, new DiscoveryServiceNamesRespHandle());
         pipeline.addLast(ServiceCheckRespHandle.NAME, new ServiceCheckRespHandle());
     }
 

@@ -45,7 +45,7 @@ public class ConnorServiceRegistry implements ServiceRegistry<ConnorRegistration
     public void deregister(ConnorRegistration registration) {
         log.info("Service deregister：{}",JsonUtil.toStr(registration.getServiceId()));
         DeregistryRequest deregistryRequest =
-                new DeregistryRequest(registration.getService().getName(),registration.getServiceId());
+                new DeregistryRequest(registration.getServiceId(), registration.getInstanceId());
         connorClient.send(deregistryRequest);
     }
 
@@ -70,6 +70,9 @@ public class ConnorServiceRegistry implements ServiceRegistry<ConnorRegistration
 
     }
 
+    /**
+     * 获取状态，如果Connor server 返回的service id 不为空则正常，否则不正常
+     */
     @SuppressWarnings("unchecked")
     @Override
     public Object getStatus(ConnorRegistration registration) {
