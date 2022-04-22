@@ -1,6 +1,5 @@
 package cn.pan.connor.core.handle.resp;
 
-import cn.pan.connor.core.model.response.DiscoveryServiceIdsResponse;
 import cn.pan.connor.core.model.response.ServiceCheckResponse;
 import cn.pan.connor.core.transport.ClientCache;
 import io.netty.channel.ChannelHandlerContext;

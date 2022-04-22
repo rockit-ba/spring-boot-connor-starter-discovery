@@ -62,29 +62,29 @@ public class ClientCache {
         }
     }
 
-    public static class ServiceIdsCache {
-        private static final String BLOCK_KEY = "service-id-list";
-        private static final SynchronousQueue<String> SERVICE_IDS_BLOCK = new SynchronousQueue<>();
-        private static final ArrayList<String> SERVICE_IDS = new ArrayList<>(16);
+    public static class ServiceNamesCache {
+        private static final String BLOCK_KEY = "service-name-list";
+        private static final SynchronousQueue<String> SERVICE_NAMES_BLOCK = new SynchronousQueue<>();
+        private static final ArrayList<String> SERVICE_NAMES = new ArrayList<>(16);
 
         /**
          * 对server 响应的信息进行缓存
          */
-        public static void cache(List<String> serviceIds) {
+        public static void cache(List<String> serviceNames) {
             try {
-                SERVICE_IDS_BLOCK.put(BLOCK_KEY);
+                SERVICE_NAMES_BLOCK.put(BLOCK_KEY);
             } catch (InterruptedException e) {
                 ReflectionUtils.rethrowRuntimeException(e);
             }
-            SERVICE_IDS.clear();
-            SERVICE_IDS.addAll(serviceIds);
+            SERVICE_NAMES.clear();
+            SERVICE_NAMES.addAll(serviceNames);
         }
 
         /**
-         * 从缓存获取service id list
+         * 从缓存获取service name list
          */
         protected static List<String> getCache() {
-            return SERVICE_IDS;
+            return SERVICE_NAMES;
         }
 
         /**
@@ -92,7 +92,7 @@ public class ClientCache {
          */
         protected static List<String> block(int timeout) {
             try {
-                if (Objects.isNull(SERVICE_IDS_BLOCK.poll(timeout, TimeUnit.MILLISECONDS))) {
+                if (Objects.isNull(SERVICE_NAMES_BLOCK.poll(timeout, TimeUnit.MILLISECONDS))) {
                     throw new RuntimeException(StrUtil.format("discovery timeout {} ！",timeout));
                 }
             } catch (InterruptedException e) {

@@ -6,7 +6,7 @@ import cn.pan.connor.core.conf.ConnorDiscoveryProperties;
 import cn.pan.connor.core.handle.codec.RpcCodec;
 import cn.pan.connor.core.model.NewService;
 import cn.pan.connor.core.model.request.DiscoveryRequest;
-import cn.pan.connor.core.model.request.DiscoveryServiceIdsRequest;
+import cn.pan.connor.core.model.request.DiscoveryServiceNamesRequest;
 import cn.pan.connor.core.model.request.ServiceCheckRequest;
 import cn.pan.connor.serviceregistry.ConnorRegistration;
 import io.netty.bootstrap.Bootstrap;
@@ -86,16 +86,16 @@ public class ConnorClient extends ClientCache {
     }
 
     /**
-     * 获取所有的service-ids
+     * 获取所有的service-name
      * @return List<String>
      */
-    public List<String> getAllServiceIds() {
-        List<String> cacheServiceIds = ServiceIdsCache.getCache();
-        if (CollUtil.isNotEmpty(cacheServiceIds)) {
-            return cacheServiceIds;
+    public List<String> getServiceNameList() {
+        List<String> cacheServiceNames = ServiceNamesCache.getCache();
+        if (CollUtil.isNotEmpty(cacheServiceNames)) {
+            return cacheServiceNames;
         }
-        refreshServiceIds();
-        return ServiceIdsCache.block(properties.getDiscovery().getTimeout());
+        refreshServiceNames();
+        return ServiceNamesCache.block(properties.getDiscovery().getTimeout());
     }
 
     /**
@@ -117,10 +117,10 @@ public class ConnorClient extends ClientCache {
     }
 
     /**
-     * 刷新本地的 serviceIDS
+     * 刷新本地的 service names
      */
-    private void refreshServiceIds() {
-        this.send(new DiscoveryServiceIdsRequest());
+    private void refreshServiceNames() {
+        this.send(new DiscoveryServiceNamesRequest());
     }
 
     /**

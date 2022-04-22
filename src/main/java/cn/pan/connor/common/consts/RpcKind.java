@@ -16,9 +16,9 @@ public interface RpcKind {
     String DISCOVERY = "1";
 
     /**
-     * 服务发现:获取所有的service IDS
+     * 服务发现:获取所有的service name
      */
-    String DISCOVERY_IDS = "2";
+    String DISCOVERY_NAMES = "2";
 
     /**
      * 服务下线

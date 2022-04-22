@@ -5,16 +5,16 @@ import cn.pan.connor.core.handle.codec.RpcCodec;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 服务发现 获取所有的serviceids 请求
+ * 服务发现 获取所有的service names 请求
  * @author Lucky Pan
  * @date 2022/4/14 17:17
  */
 @Slf4j
-public record DiscoveryServiceIdsRequest() implements RpcCodec {
+public record DiscoveryServiceNamesRequest() implements RpcCodec {
 
     @Override
     public String getRpcKind() {
-        return RpcKind.DISCOVERY_IDS;
+        return RpcKind.DISCOVERY_NAMES;
     }
 
 }

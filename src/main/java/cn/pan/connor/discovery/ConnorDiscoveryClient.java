@@ -25,6 +25,9 @@ public class ConnorDiscoveryClient implements DiscoveryClient {
         return "ConnorDiscoveryClient";
     }
 
+    /**
+     * 获取某个service的所有的实例
+     */
     @Override
     public List<ServiceInstance> getInstances(String serviceName) {
         List<ServiceInstance> instances = new ArrayList<>();
@@ -36,8 +39,11 @@ public class ConnorDiscoveryClient implements DiscoveryClient {
 
     }
 
+    /**
+     * 获取所有的存在的 service name
+     */
     @Override
     public List<String> getServices() {
-        return this.client.getAllServiceIds();
+        return this.client.getServiceNameList();
     }
 }
