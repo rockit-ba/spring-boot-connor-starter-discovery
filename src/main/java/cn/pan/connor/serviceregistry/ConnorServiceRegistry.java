@@ -32,7 +32,7 @@ public class ConnorServiceRegistry implements ServiceRegistry<ConnorRegistration
         ChannelFuture future = connorClient.send(registryRequest);
         future.addListener(ele -> {
            if (future.isSuccess()) {
-               log.info("Registering service with consul: " + registration.getService());
+               log.info("Registering service with Connor: " + registration.getService());
            }
         });
     }

@@ -14,6 +14,8 @@ import org.springframework.context.ApplicationListener;
 public class InstancePreRegisteredEventListener
         implements ApplicationListener<InstancePreRegisteredEvent>
 {
+
+
     @Override
     public void onApplicationEvent(InstancePreRegisteredEvent event) {
         log.info("InstancePreRegisteredEventListener:{}", JsonUtil.toStr(event));
