@@ -19,7 +19,7 @@ public class DiscoveryServiceNamesRespHandle extends SimpleChannelInboundHandler
 
 	@Override
 	protected void channelRead0(ChannelHandlerContext context, DiscoveryServiceNamesResponse response) {
-		log.info("accept Connor server discovery service-names");
+		log.info("accept Connor server discovery service-names： {}", response.getServiceNames());
 		ClientCache.ServiceNamesCache.cache(response.getServiceNames());
 	}
 }
