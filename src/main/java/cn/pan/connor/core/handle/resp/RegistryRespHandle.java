@@ -19,12 +19,6 @@ public class RegistryRespHandle extends SimpleChannelInboundHandler<RegistryResp
 
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, RegistryResponse msg) {
-		log.info("RegistryRespHandle: {}", JsonUtil.toStr(msg));
-
-		if (msg.isSuccess()) {
-			log.info("Service register success: {}", msg.getServiceName());
-		}else {
-			log.error("Service register fail: {}", msg.getServiceName());
-		}
+		log.info("accept Connor server registry : {}", JsonUtil.toStr(msg));
 	}
 }

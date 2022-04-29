@@ -2,10 +2,7 @@ package cn.pan.connor.core.transport;
 
 import cn.pan.connor.core.handle.codec.RpcCodecDecoder;
 import cn.pan.connor.core.handle.codec.RpcCodecEncoder;
-import cn.pan.connor.core.handle.resp.DiscoveryRespHandle;
-import cn.pan.connor.core.handle.resp.DiscoveryServiceNamesRespHandle;
-import cn.pan.connor.core.handle.resp.RegistryRespHandle;
-import cn.pan.connor.core.handle.resp.ServiceCheckRespHandle;
+import cn.pan.connor.core.handle.resp.*;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -57,6 +54,7 @@ public class ClientChannelInitializer extends ChannelInitializer<SocketChannel> 
         pipeline.addLast(DiscoveryRespHandle.NAME, new DiscoveryRespHandle());
         pipeline.addLast(DiscoveryServiceNamesRespHandle.NAME, new DiscoveryServiceNamesRespHandle());
         pipeline.addLast(ServiceCheckRespHandle.NAME, new ServiceCheckRespHandle());
+        pipeline.addLast(DeregistryRespHandle.NAME, new DeregistryRespHandle());
     }
 
 }

@@ -1,8 +1,5 @@
 package cn.pan.connor.core.model.response;
 
-import cn.pan.connor.core.handle.codec.RpcCodec;
-import cn.pan.connor.common.consts.RpcKind;
-import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 
 /**
@@ -12,8 +9,5 @@ import lombok.Data;
  */
 @Data
 public class RegistryResponse{
-    @SerializedName("service_name")
-    private String serviceName;
-
     private boolean success;
 }
