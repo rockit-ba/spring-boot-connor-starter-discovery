@@ -8,11 +8,11 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * @author pan
- * @create 2022/4/29 5:17 下午
  * <p>
  *  服务端主动推送移除某个服务
  * </p>
+ * @author pan
+ * @create 2022/4/29 5:17 下午
  */
 @Slf4j
 public class RemoveServiceRespHandle extends SimpleChannelInboundHandler<RemoveServiceResponse> {

@@ -7,11 +7,12 @@ import lombok.Data;
 import java.util.List;
 
 /**
+ * <p>
+ * 从本地移除指定服务
+ * </p>
  * @author pan
  * @create 2022/4/29 5:06 下午
- * <p>
- *  从本地移除指定服务
- * </p>
+
  */
 @Data
 public class RemoveServiceResponse {

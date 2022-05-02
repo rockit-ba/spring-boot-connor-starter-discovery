@@ -9,11 +9,12 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * @author pan
- * @create 2022/4/29 5:13 下午
  * <p>
  *  服务端主动响应的添加服务的处理器
  * </p>
+ * @author pan
+ * @create 2022/4/29 5:13 下午
+ *
  */
 @Slf4j
 public class AddServiceRespHandle extends SimpleChannelInboundHandler<AddServiceResponse> {
