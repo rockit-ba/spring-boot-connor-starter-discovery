@@ -1,7 +1,10 @@
 package cn.pan.connor.core.model.response;
 
+import cn.pan.connor.core.model.NewService;
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * @author pan
@@ -12,8 +15,8 @@ import lombok.Data;
  */
 @Data
 public class RemoveServiceResponse {
-    @SerializedName("service_id")
-    private String serviceId;
     @SerializedName("service_name")
     private String serviceName;
+    @SerializedName("service_list")
+    private List<NewService> serviceList;
 }

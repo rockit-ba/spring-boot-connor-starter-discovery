@@ -2,6 +2,7 @@ package cn.pan.connor.core.handle.resp;
 
 import cn.pan.connor.common.utils.JsonUtil;
 import cn.pan.connor.core.model.response.RemoveServiceResponse;
+import cn.pan.connor.core.transport.ClientCache;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -19,5 +20,6 @@ public class RemoveServiceRespHandle extends SimpleChannelInboundHandler<RemoveS
     @Override
     protected void channelRead0(ChannelHandlerContext context, RemoveServiceResponse response) {
         log.info("accept connor server RemoveServiceResponse : {}", JsonUtil.toStr(response));
+        ClientCache.ServiceCache.update(response.getServiceName(),response.getServiceList());
     }
 }
