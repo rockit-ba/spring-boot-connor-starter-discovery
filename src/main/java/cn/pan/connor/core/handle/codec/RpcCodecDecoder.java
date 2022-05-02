@@ -26,7 +26,6 @@ public class RpcCodecDecoder extends ByteToMessageDecoder {
         byteBuf.clear();
         String type = content.substring(0, 1);
         String json = content.substring(1);
-
         switch (type) {
             case RpcKind.REGISTRY -> list.add(JsonUtil.toBean(json, RegistryResponse.class));
             case RpcKind.DISCOVERY -> list.add(JsonUtil.toBean(json, DiscoveryResponse.class));
