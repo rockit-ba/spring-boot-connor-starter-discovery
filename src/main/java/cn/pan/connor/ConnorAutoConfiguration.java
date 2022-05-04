@@ -2,6 +2,7 @@ package cn.pan.connor;
 
 import cn.pan.connor.core.conf.ConnorDiscoveryProperties;
 import cn.pan.connor.core.transport.ConnorClient;
+import cn.pan.connor.core.transport.HeartbeatSchedule;
 import cn.pan.connor.discovery.ConnorDiscoveryClient;
 import cn.pan.connor.serviceregistry.ConnorAutoServiceRegistration;
 import cn.pan.connor.serviceregistry.ConnorRegistration;
@@ -55,8 +56,8 @@ public class ConnorAutoConfiguration {
      * @return ConnorServiceRegistry
      */
     @Bean
-    public ConnorServiceRegistry serviceRegistry() {
-        return new ConnorServiceRegistry();
+    public ConnorServiceRegistry serviceRegistry(final ConnorClient client) {
+        return new ConnorServiceRegistry(client);
     }
 
     /**
@@ -82,6 +83,16 @@ public class ConnorAutoConfiguration {
             ConnorRegistration registration,
             ConnorDiscoveryProperties properties) {
         return new ConnorAutoServiceRegistration(serviceRegistry,autoServiceRegistrationProperties,registration,properties);
+    }
+
+    /**
+     * 定时发送心跳检测
+     * @param client ConnorClient
+     * @return HeartbeatSchedule
+     */
+    @Bean
+    public HeartbeatSchedule heartbeatSchedule(ConnorClient client) {
+        return new HeartbeatSchedule(client);
     }
 
 }

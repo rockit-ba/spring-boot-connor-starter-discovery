@@ -38,4 +38,9 @@ public interface RpcKind {
      * 通知客户端缓存删除某服务
      */
     String REMOVE_SERVICE = "6";
+
+    /**
+     * 心跳检测发送
+     */
+    String HEARTBEAT = "7";
 }
