@@ -2,6 +2,7 @@ package cn.pan.connor.core.transport;
 
 import lombok.extern.slf4j.Slf4j;
 
+import javax.annotation.PreDestroy;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -15,14 +16,19 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 public class HeartbeatSchedule {
+    private final ScheduledThreadPoolExecutor poolExecutor = new ScheduledThreadPoolExecutor(1, r -> {
+        Thread thread = new Thread(r, "heartbeat");
+        thread.setDaemon(true);
+        return thread;
+    });
 
     public HeartbeatSchedule(ConnorClient client) {
-        ScheduledThreadPoolExecutor poolExecutor = new ScheduledThreadPoolExecutor(1, r -> {
-            Thread thread = new Thread(r, "heartbeat");
-            thread.setDaemon(true);
-            return thread;
-        });
         log.info("HeartbeatSchedule init");
         poolExecutor.schedule(client::doHeartbeat,30, TimeUnit.SECONDS);
+    }
+
+    @PreDestroy
+    public void destroy() {
+        poolExecutor.shutdown();
     }
 }

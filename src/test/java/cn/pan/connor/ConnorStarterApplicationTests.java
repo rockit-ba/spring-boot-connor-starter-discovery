@@ -1,9 +1,6 @@
 package cn.pan.connor;
 
-import cn.hutool.core.lang.Assert;
-import cn.pan.connor.common.utils.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.bouncycastle.pqc.math.linearalgebra.PolynomialRingGF2;
 import org.junit.jupiter.api.Test;
 
 import java.util.Objects;
