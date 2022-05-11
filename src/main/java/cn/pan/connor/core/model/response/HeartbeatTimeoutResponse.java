@@ -15,6 +15,6 @@ import java.util.List;
  */
 @Data
 public class HeartbeatTimeoutResponse {
-    @SerializedName("service_ids")
-    private List<String> serviceIds;
+    @SerializedName("timeout_service_ids")
+    private List<String> timeoutServiceIds;
 }

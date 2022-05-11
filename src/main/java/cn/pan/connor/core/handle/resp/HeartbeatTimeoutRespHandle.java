@@ -2,6 +2,7 @@ package cn.pan.connor.core.handle.resp;
 
 import cn.pan.connor.common.utils.JsonUtil;
 import cn.pan.connor.core.model.response.HeartbeatTimeoutResponse;
+import cn.pan.connor.core.transport.ClientCache;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,6 @@ public class HeartbeatTimeoutRespHandle extends SimpleChannelInboundHandler<Hear
     @Override
     protected void channelRead0(ChannelHandlerContext context, HeartbeatTimeoutResponse response) {
         log.info("accept connor service heartbeatTimeoutRespHandle : {}", JsonUtil.toStr(response));
-
+        ClientCache.ServiceCache.timeoutUpdate(response.getTimeoutServiceIds());
     }
 }

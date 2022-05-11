@@ -12,6 +12,7 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * 客户端缓存
@@ -28,6 +29,19 @@ public class ClientCache {
         private static final String BLOCK_KEY = "service-list";
         private static final SynchronousQueue<String> SERVICES_BLOCK = new SynchronousQueue<>();
         private static final ConcurrentSkipListMap<String, List<NewService>> SERVICES = new ConcurrentSkipListMap<>();
+
+        /**
+         * 根据server的推送，移除超时的实例
+         * @param timeoutServiceIds 超时的实例id
+         */
+        public static void timeoutUpdate(List<String> timeoutServiceIds) {
+            SERVICES.forEach((k,v) -> {
+                List<NewService> services = v.stream()
+                        .filter(service -> !timeoutServiceIds.contains(service.getId()))
+                        .collect(Collectors.toList());
+                SERVICES.put(k,services);
+            });
+        }
 
         /**
          * 根据server的推送更新本地缓存
