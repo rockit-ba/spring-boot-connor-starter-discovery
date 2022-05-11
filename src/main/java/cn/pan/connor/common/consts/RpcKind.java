@@ -43,4 +43,9 @@ public interface RpcKind {
      * 心跳检测发送
      */
     String HEARTBEAT = "7";
+
+    /**
+     * 心跳超时服务剔除
+     */
+    String HEARTBEAT_TIMEOUT = "8";
 }

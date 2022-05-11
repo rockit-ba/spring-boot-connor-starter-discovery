@@ -57,6 +57,7 @@ public class ClientChannelInitializer extends ChannelInitializer<SocketChannel> 
         pipeline.addLast(DeregistryRespHandle.NAME, new DeregistryRespHandle());
         pipeline.addLast(AddServiceRespHandle.NAME, new AddServiceRespHandle());
         pipeline.addLast(RemoveServiceRespHandle.NAME, new RemoveServiceRespHandle());
+        pipeline.addLast(HeartbeatRespHandle.NAME, new HeartbeatRespHandle());
     }
 
 }

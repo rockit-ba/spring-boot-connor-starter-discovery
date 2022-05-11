@@ -24,7 +24,7 @@ public class HeartbeatSchedule {
 
     public HeartbeatSchedule(ConnorClient client) {
         log.info("HeartbeatSchedule init");
-        poolExecutor.schedule(client::doHeartbeat,30, TimeUnit.SECONDS);
+        poolExecutor.scheduleAtFixedRate(client::doHeartbeat,30, 30, TimeUnit.SECONDS);
     }
 
     @PreDestroy

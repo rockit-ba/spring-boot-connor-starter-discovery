@@ -34,6 +34,8 @@ public class RpcCodecDecoder extends ByteToMessageDecoder {
             case RpcKind.DEREGISTRY -> list.add(JsonUtil.toBean(json, DeregistryResponse.class));
             case RpcKind.ADD_SERVICE -> list.add(JsonUtil.toBean(json, AddServiceResponse.class));
             case RpcKind.REMOVE_SERVICE -> list.add(JsonUtil.toBean(json, RemoveServiceResponse.class));
+            case RpcKind.HEARTBEAT -> list.add(JsonUtil.toBean(json, HeartbeatResponse.class));
+            case RpcKind.HEARTBEAT_TIMEOUT -> list.add(JsonUtil.toBean(json, HeartbeatTimeoutResponse.class));
             default -> log.error("Response Parser Fail type:{}, json:{}",type, json);
         }
     }
