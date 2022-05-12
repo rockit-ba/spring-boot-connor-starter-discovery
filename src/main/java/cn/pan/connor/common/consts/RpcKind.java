@@ -29,4 +29,23 @@ public interface RpcKind {
      * 服务检测
      */
     String SERVICE_CHECK = "4";
+
+    /**
+     * 通知客户端缓存添加某服务
+     */
+    String ADD_SERVICE = "5";
+    /**
+     * 通知客户端缓存删除某服务
+     */
+    String REMOVE_SERVICE = "6";
+
+    /**
+     * 心跳检测发送
+     */
+    String HEARTBEAT = "7";
+
+    /**
+     * 心跳超时服务剔除
+     */
+    String HEARTBEAT_TIMEOUT = "8";
 }

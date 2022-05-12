@@ -7,10 +7,10 @@ import cn.pan.connor.core.model.request.RegistryRequest;
 import cn.pan.connor.core.transport.ConnorClient;
 import io.netty.channel.ChannelFuture;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
 
-import static org.springframework.boot.actuate.health.Status.*;
+import static org.springframework.boot.actuate.health.Status.OUT_OF_SERVICE;
+import static org.springframework.boot.actuate.health.Status.UP;
 
 /**
  * 服务注册实现类
@@ -19,8 +19,10 @@ import static org.springframework.boot.actuate.health.Status.*;
  */
 @Slf4j
 public class ConnorServiceRegistry implements ServiceRegistry<ConnorRegistration> {
-    @Autowired
-    private ConnorClient connorClient;
+    private final ConnorClient connorClient;
+    public ConnorServiceRegistry(ConnorClient connorClient) {
+        this.connorClient = connorClient;
+    }
 
     /**
      * 注册服务
@@ -32,7 +34,7 @@ public class ConnorServiceRegistry implements ServiceRegistry<ConnorRegistration
         ChannelFuture future = connorClient.send(registryRequest);
         future.addListener(ele -> {
            if (future.isSuccess()) {
-               log.info("Registering service with consul: " + registration.getService());
+               log.info("Registering service with Connor: " + registration.getService());
            }
         });
     }

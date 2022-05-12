@@ -7,6 +7,7 @@ import cn.pan.connor.core.handle.codec.RpcCodec;
 import cn.pan.connor.core.model.NewService;
 import cn.pan.connor.core.model.request.DiscoveryRequest;
 import cn.pan.connor.core.model.request.DiscoveryServiceNamesRequest;
+import cn.pan.connor.core.model.request.HeartbeatRequest;
 import cn.pan.connor.core.model.request.ServiceCheckRequest;
 import cn.pan.connor.serviceregistry.ConnorRegistration;
 import io.netty.bootstrap.Bootstrap;
@@ -29,6 +30,7 @@ public class ConnorClient extends ClientCache {
     private final Channel channel;
     private final NioEventLoopGroup loopGroup;
     private final ConnorDiscoveryProperties properties;
+    private final HeartbeatRequest heartbeatRequest;
 
     public ConnorClient(ConnorDiscoveryProperties properties) {
         this.properties = properties;
@@ -61,6 +63,8 @@ public class ConnorClient extends ClientCache {
                 log.info("Channel is closed");
             }
         });
+        // 初始化心跳检测请求，始终不会变
+        this.heartbeatRequest = new HeartbeatRequest(properties.getDiscovery().getServiceId());
     }
 
     /**
@@ -71,6 +75,13 @@ public class ConnorClient extends ClientCache {
     public ChannelFuture send(RpcCodec rpcCodec) {
         log.info("Send rpc: {}", JsonUtil.toStr(rpcCodec));
         return channel.writeAndFlush(rpcCodec);
+    }
+
+    /**
+     * 向服务端发送心跳检测数据
+     */
+    public void doHeartbeat() {
+        this.send(this.heartbeatRequest);
     }
 
     /**

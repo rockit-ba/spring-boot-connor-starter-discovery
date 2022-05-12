@@ -1,6 +1,7 @@
 package cn.pan.connor.serviceregistry;
 
 import cn.pan.connor.common.utils.JsonUtil;
+import cn.pan.connor.core.conf.ConnorDiscoveryProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.client.discovery.event.InstancePreRegisteredEvent;
 import org.springframework.cloud.client.discovery.event.InstanceRegisteredEvent;

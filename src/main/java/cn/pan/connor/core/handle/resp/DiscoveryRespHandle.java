@@ -1,5 +1,6 @@
 package cn.pan.connor.core.handle.resp;
 
+import cn.pan.connor.common.utils.JsonUtil;
 import cn.pan.connor.core.model.response.DiscoveryResponse;
 import cn.pan.connor.core.transport.ClientCache;
 import io.netty.channel.ChannelHandlerContext;
@@ -20,7 +21,7 @@ public class DiscoveryRespHandle extends SimpleChannelInboundHandler<DiscoveryRe
 
 	@Override
 	protected void channelRead0(ChannelHandlerContext context, DiscoveryResponse response) {
-		log.info("accept Connor server discovery service");
+		log.info("accept Connor server discovery service: {}", JsonUtil.toStr(response.getServiceName()));
 		ClientCache.ServiceCache.cache(response.getServiceName(),response.getServices());
 	}
 }

@@ -2,6 +2,7 @@ package cn.pan.connor;
 
 import cn.pan.connor.core.conf.ConnorDiscoveryProperties;
 import cn.pan.connor.core.transport.ConnorClient;
+import cn.pan.connor.core.transport.HeartbeatSchedule;
 import cn.pan.connor.discovery.ConnorDiscoveryClient;
 import cn.pan.connor.serviceregistry.ConnorAutoServiceRegistration;
 import cn.pan.connor.serviceregistry.ConnorRegistration;
@@ -10,13 +11,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.context.ConfigurationPropertiesAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.serviceregistry.AutoServiceRegistrationProperties;
 import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.List;
 
 /**
  * connor client 自动装配
@@ -55,8 +53,8 @@ public class ConnorAutoConfiguration {
      * @return ConnorServiceRegistry
      */
     @Bean
-    public ConnorServiceRegistry serviceRegistry() {
-        return new ConnorServiceRegistry();
+    public ConnorServiceRegistry serviceRegistry(final ConnorClient client) {
+        return new ConnorServiceRegistry(client);
     }
 
     /**
@@ -82,6 +80,16 @@ public class ConnorAutoConfiguration {
             ConnorRegistration registration,
             ConnorDiscoveryProperties properties) {
         return new ConnorAutoServiceRegistration(serviceRegistry,autoServiceRegistrationProperties,registration,properties);
+    }
+
+    /**
+     * 定时向server发送心跳检测数据
+     * @param client ConnorClient
+     * @return HeartbeatSchedule
+     */
+    @Bean
+    public HeartbeatSchedule heartbeatSchedule(ConnorClient client) {
+        return new HeartbeatSchedule(client);
     }
 
 }

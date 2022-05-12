@@ -2,12 +2,11 @@ package cn.pan.connor.core.model.response;
 
 import lombok.Data;
 
+
 /**
- * 服务注册响应
- * @author Lucky Pan
- * @date 2022/4/14 17:17
+ * @author pan
  */
 @Data
-public class RegistryResponse{
+public class DeregistryResponse {
     private boolean success;
 }

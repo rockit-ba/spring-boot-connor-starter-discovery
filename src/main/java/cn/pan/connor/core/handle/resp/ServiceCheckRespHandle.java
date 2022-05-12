@@ -1,5 +1,6 @@
 package cn.pan.connor.core.handle.resp;
 
+import cn.pan.connor.common.utils.JsonUtil;
 import cn.pan.connor.core.model.response.ServiceCheckResponse;
 import cn.pan.connor.core.transport.ClientCache;
 import io.netty.channel.ChannelHandlerContext;
@@ -19,6 +20,7 @@ public class ServiceCheckRespHandle extends SimpleChannelInboundHandler<ServiceC
 
 	@Override
 	protected void channelRead0(ChannelHandlerContext context, ServiceCheckResponse response) {
+		log.info("accept Connor server status check: {}", JsonUtil.toStr(response));
 		ClientCache.ServiceCheck.putResp(response.getServiceId());
 	}
 }
